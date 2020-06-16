@@ -1,5 +1,14 @@
+#Visual Studio
 .vs
 *.vcxproj.user
 
+#VS Code
+.vscode
+
+#Mac
+.DS_Store
+
+#Build files
+build
 intermediates
 lib

@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
+#include <initializer_list>
 
 #define GLUTIL_GL_CALL(call) call
 
