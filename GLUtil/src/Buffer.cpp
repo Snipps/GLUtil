@@ -83,7 +83,7 @@ BufferTarget BufferBindingToTarget(BufferBinding binding)
 
 uint32_t GetBoundBuffer(BufferBinding binding)
 {
-	uint32_t buffer;
+	uint32_t buffer = 0;
 	GLUTIL_GL_CALL(glGetIntegerv(ENUM(binding), reinterpret_cast<GLint*>(&buffer)));
 	return buffer;
 }
@@ -223,21 +223,21 @@ void Buffer::GetPointer(BufferPointer pname, void** ptr, BufferTarget target) co
 
 int32_t Buffer::GetParamI(BufferParam pname, BufferTarget target) const
 {
-	int32_t param;
+	int32_t param = 0;
 	GetParam(pname, &param, target);
 	return param;
 }
 
 int64_t Buffer::GetParamI64(BufferParam pname, BufferTarget target) const
 {
-	int64_t param;
+	int64_t param = 0;
 	GetParam(pname, &param, target);
 	return param;
 }
 
 void* Buffer::GetPointer(BufferPointer pname, BufferTarget target) const
 {
-	void* ptr;
+	void* ptr = nullptr;
 	GetPointer(pname, &ptr, target);
 	return ptr;
 }
@@ -389,21 +389,21 @@ void Buffer::GetPointer(BufferPointer pname, void** ptr) const
 
 int32_t Buffer::GetParamI(BufferParam pname) const
 {
-	int32_t value;
+	int32_t value = 0;
 	GetParam(pname, &value);
 	return value;
 }
 
 int64_t Buffer::GetParamI64(BufferParam pname) const
 {
-	int64_t value;
+	int64_t value = 0;
 	GetParam(pname, &value);
 	return value;
 }
 
 void* Buffer::GetPointer(BufferPointer pname) const
 {
-	void* ptr;
+	void* ptr = nullptr;
 	GetPointer(pname, &ptr);
 	return ptr;
 }

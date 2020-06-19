@@ -40,7 +40,7 @@ Shader& Shader::Source(int32_t count, const char* const* strings, const int32_t*
 
 Shader& Shader::Source(const char* src)
 {
-	int32_t len = strlen(src);
+	int32_t len = static_cast<int32_t>(strlen(src));
 	return Source(1, &src, &len);
 }
 
@@ -84,7 +84,7 @@ bool Shader::Compile()
 
 int32_t Shader::GetInfoLog(int32_t maxLength, char* infoLog) const
 {
-	int32_t logLen;
+	int32_t logLen = 0;
 	GLUTIL_GL_CALL(glGetShaderInfoLog(*this, maxLength, &logLen, infoLog));
 	return logLen;
 }
@@ -97,13 +97,13 @@ std::string Shader::GetInfoLog() const
 	std::unique_ptr<char[]> logBuf(new(std::nothrow) char[logLen]);
 	if (!logBuf)
 		return "Failed to allocate buffer for shader log";
-	GetInfoLog(logLen, logBuf.get());
-	return std::string(logBuf.get());
+	int32_t length = GetInfoLog(logLen, logBuf.get());
+	return std::string(logBuf.get(), length);
 }
 
 int32_t Shader::GetSource(int32_t bufSize, char* src) const
 {
-	int32_t srcLen;
+	int32_t srcLen = 0;
 	GLUTIL_GL_CALL(glGetShaderSource(*this, bufSize, &srcLen, src));
 	return srcLen;
 }
@@ -127,7 +127,7 @@ void Shader::GetParam(ShaderParam pname, int32_t* value) const
 
 int32_t Shader::GetParamI(ShaderParam pname) const
 {
-	int32_t value;
+	int32_t value = 0;
 	GetParam(pname, &value);
 	return value;
 }
