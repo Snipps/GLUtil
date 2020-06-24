@@ -83,7 +83,7 @@ enum class BufferAccessFlags : uint32_t
 	Unsynchronized = 0x0020
 };
 
-enum class BufferParam : uint32_t
+enum class BufferProp : uint32_t
 {
 	Access = 0x88BB,
 	AccessFlags = 0x911F,
@@ -153,12 +153,12 @@ public:
 	void BindBase(BufferTarget target, uint32_t index) const;
 	void BindRange(BufferTarget target, uint32_t index, intptr_t offset, intptr_t size) const;
 
-	void GetParam(BufferParam pname, int32_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
-	void GetParam(BufferParam pname, int64_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
+	void GetProp(BufferProp pname, int32_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
+	void GetProp(BufferProp pname, int64_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
 	void GetPointer(BufferPointer pname, void** ptr, BufferTarget target = BufferTarget::CopyWrite) const;
 
-	int32_t GetParamI(BufferParam pname, BufferTarget target = BufferTarget::CopyWrite) const;
-	int64_t GetParamI64(BufferParam pname, BufferTarget target = BufferTarget::CopyWrite) const;
+	int32_t GetPropI(BufferProp pname, BufferTarget target = BufferTarget::CopyWrite) const;
+	int64_t GetPropI64(BufferProp pname, BufferTarget target = BufferTarget::CopyWrite) const;
 	void* GetPointer(BufferPointer pname, BufferTarget target = BufferTarget::CopyWrite) const;
 
 	BufferAccess GetAccess(BufferTarget target = BufferTarget::CopyWrite) const;
@@ -201,12 +201,12 @@ public:
 	void BindBase(BufferTarget target, uint32_t index) const;
 	void BindRange(BufferTarget target, uint32_t index, intptr_t offset, intptr_t size) const;
 
-	void GetParam(BufferParam pname, int32_t* value) const;
-	void GetParam(BufferParam pname, int64_t* value) const;
+	void GetProp(BufferProp pname, int32_t* value) const;
+	void GetProp(BufferProp pname, int64_t* value) const;
 	void GetPointer(BufferPointer pname, void** ptr) const;
 
-	int32_t GetParamI(BufferParam pname) const;
-	int64_t GetParamI64(BufferParam pname) const;
+	int32_t GetPropI(BufferProp pname) const;
+	int64_t GetPropI64(BufferProp pname) const;
 	void* GetPointer(BufferPointer pname) const;
 
 	BufferAccess GetAccess() const;

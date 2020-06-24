@@ -3,10 +3,171 @@
 #include <glad/glad.h>
 
 #include <memory>
+#include <cstdlib>
+#include <cstring>
 
 #define ENUM(e) static_cast<GLenum>(e)
 
 namespace GLUtil {
+
+ActiveAttrib::ActiveAttrib() :
+	mName(nullptr), mNameLength(0), mSize(0), mType(static_cast<DataType>(0))
+{}
+
+ActiveAttrib::ActiveAttrib(ActiveAttrib&& other) noexcept
+{
+	mName = other.mName;
+	mNameLength = other.mNameLength;
+	mSize = other.mSize;
+	mType = other.mType;
+
+	other.mName = nullptr;
+	other.mNameLength = 0;
+	other.mSize = 0;
+	other.mType = static_cast<DataType>(0);
+}
+
+ActiveAttrib::~ActiveAttrib()
+{
+	free(mName);
+}
+
+ActiveAttrib& ActiveAttrib::operator=(ActiveAttrib&& other) noexcept
+{
+	char* tmpName = mName;
+	int32_t tmpNameLength = mNameLength;
+	int32_t tmpSize = mSize;
+	DataType tmpType = other.mType;
+
+	mName = other.mName;
+	mNameLength = other.mNameLength;
+	mSize = other.mSize;
+	mType = other.mType;
+
+	other.mName = tmpName;
+	other.mNameLength = tmpNameLength;
+	other.mSize = tmpSize;
+	other.mType = tmpType;
+
+	return *this;
+}
+
+const char* ActiveAttrib::GetName() const
+{
+	return mName;
+}
+
+int32_t ActiveAttrib::GetNameLength() const
+{
+	return mNameLength;
+}
+
+int32_t ActiveAttrib::GetSize() const
+{
+	return mSize;
+}
+
+DataType ActiveAttrib::GetType() const
+{
+	return mType;
+}
+
+ProgramBinary::ProgramBinary() :
+	mBinary(nullptr), mLength(0), mFormat(0)
+{}
+
+/*
+ProgramBinary::ProgramBinary(const ProgramBinary& other)
+{
+	mBinary = malloc(other.mLength);
+	if (mBinary) {
+		mLength = other.mLength;
+		mFormat = other.mFormat;
+		memcpy(mBinary, other.mBinary, mLength);
+	} else {
+		mLength = 0;
+		mFormat = 0;
+	}
+}
+*/
+
+ProgramBinary::ProgramBinary(ProgramBinary&& other) noexcept
+{
+	mBinary = other.mBinary;
+	mLength = other.mLength;
+	mFormat = other.mFormat;
+
+	other.mBinary = nullptr;
+	other.mLength = 0;
+	other.mFormat = 0;
+}
+
+ProgramBinary::~ProgramBinary()
+{
+	free(mBinary);
+}
+
+/*
+ProgramBinary& ProgramBinary::operator=(const ProgramBinary& other)
+{
+	if (mLength >= other.mLength) {
+		memset((char*)mBinary + other.mLength, 0, mLength - other.mLength);
+	} else {
+		free(mBinary);
+		mBinary = malloc(other.mLength);
+		if (!mBinary) {
+			mLength = 0;
+			mFormat = 0;
+			return *this;
+		}
+	}
+
+	memcpy(mBinary, other.mBinary, other.mLength);
+	mLength = other.mLength;
+	mFormat = other.mFormat;
+	return *this;
+}
+*/
+
+ProgramBinary& ProgramBinary::operator=(ProgramBinary&& other) noexcept
+{
+	void* tmpBinary = mBinary;
+	int32_t tmpLength = mLength;
+	uint32_t tmpFormat = mFormat;
+
+	mBinary = other.mBinary;
+	mLength = other.mLength;
+	mFormat = other.mFormat;
+
+	other.mBinary = tmpBinary;
+	other.mLength = tmpLength;
+	other.mFormat = tmpFormat;
+
+	return *this;
+}
+
+const void* ProgramBinary::GetBinary() const
+{
+	return mBinary;
+}
+
+int32_t ProgramBinary::GetLength() const
+{
+	return mLength;
+}
+
+uint32_t ProgramBinary::GetFormat() const
+{
+	return mFormat;
+}
+
+ProgramResource::ProgramResource() :
+	mProgram(0), mInterface(static_cast<ProgramInterface>(0)), mIndex(0)
+{}
+
+ProgramResource::ProgramResource(uint32_t program, ProgramInterface interface, uint32_t index) :
+	mProgram(program), mInterface(interface), mIndex(index)
+{}
 
 int32_t ProgramResource::GetName(int32_t bufSize, char* name) const
 {
@@ -212,6 +373,29 @@ int32_t ProgramResource::GetTransformFeedbackBufferStride() const
 	return GetPropI(ProgramResourceProp::TransformFeedbackBufferStride);
 }
 
+uint32_t ProgramResource::GetProgram() const
+{
+	return mProgram;
+}
+
+ProgramInterface ProgramResource::GetInterface() const
+{
+	return mInterface;
+}
+
+uint32_t ProgramResource::GetIndex() const
+{
+	return mIndex;
+}
+
+ProgramUniformBlock::ProgramUniformBlock() :
+	mProgram(0), mIndex(0)
+{}
+
+ProgramUniformBlock::ProgramUniformBlock(uint32_t program, uint32_t index) :
+	mProgram(program), mIndex(index)
+{}
+
 ProgramUniformBlock& ProgramUniformBlock::Binding(uint32_t binding)
 {
 	GLUTIL_GL_CALL(glUniformBlockBinding(mProgram, mIndex, binding));
@@ -239,36 +423,36 @@ std::string ProgramUniformBlock::GetName() const
 	return std::string(buf.get(), length);
 }
 
-void ProgramUniformBlock::GetParam(UniformBlockParam pname, int32_t* value) const
+void ProgramUniformBlock::GetProp(UniformBlockProp pname, int32_t* value) const
 {
 	GLUTIL_GL_CALL(glGetActiveUniformBlockiv(mProgram, mIndex, ENUM(pname), value));
 }
 
-int32_t ProgramUniformBlock::GetParamI(UniformBlockParam pname) const
+int32_t ProgramUniformBlock::GetPropI(UniformBlockProp pname) const
 {
 	int32_t value = 0;
-	GetParam(pname, &value);
+	GetProp(pname, &value);
 	return value;
 }
 
 uint32_t ProgramUniformBlock::GetBinding() const
 {
-	return GetParamI(UniformBlockParam::Binding);
+	return GetPropI(UniformBlockProp::Binding);
 }
 
 int32_t ProgramUniformBlock::GetDataSize() const
 {
-	return GetParamI(UniformBlockParam::DataSize);
+	return GetPropI(UniformBlockProp::DataSize);
 }
 
 int32_t ProgramUniformBlock::GetNameLength() const
 {
-	return GetParamI(UniformBlockParam::NameLength);
+	return GetPropI(UniformBlockProp::NameLength);
 }
 
 int32_t ProgramUniformBlock::GetNumActiveUniforms() const
 {
-	return GetParamI(UniformBlockParam::NumActiveUniforms);
+	return GetPropI(UniformBlockProp::NumActiveUniforms);
 }
 
 std::vector<int32_t> ProgramUniformBlock::GetActiveUniformIndices() const
@@ -278,39 +462,57 @@ std::vector<int32_t> ProgramUniformBlock::GetActiveUniformIndices() const
 		return std::vector<int32_t>();
 
 	std::vector<int32_t> v(count, 0);
-	GetParam(UniformBlockParam::ActiveUniformIndices, v.data());
+	GetProp(UniformBlockProp::ActiveUniformIndices, v.data());
 	return std::move(v);
 }
 
 bool ProgramUniformBlock::IsReferencedByVertexShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByVertexShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByVertexShader) == GL_TRUE;
 }
 
 bool ProgramUniformBlock::IsReferencedByTessControlShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByTessControlShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByTessControlShader) == GL_TRUE;
 }
 
 bool ProgramUniformBlock::IsReferencedByTessEvaluationShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByTessEvaluationShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByTessEvaluationShader) == GL_TRUE;
 }
 
 bool ProgramUniformBlock::IsReferencedByGeometryShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByGeometryShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByGeometryShader) == GL_TRUE;
 }
 
 bool ProgramUniformBlock::IsReferencedByFragmentShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByFragmentShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByFragmentShader) == GL_TRUE;
 }
 
 bool ProgramUniformBlock::IsReferencedByComputeShader() const
 {
-	return GetParamI(UniformBlockParam::ReferencedByComputeShader) == GL_TRUE;
+	return GetPropI(UniformBlockProp::ReferencedByComputeShader) == GL_TRUE;
 }
+
+uint32_t ProgramUniformBlock::GetProgram() const
+{
+	return mProgram;
+}
+
+uint32_t ProgramUniformBlock::GetIndex() const
+{
+	return mIndex;
+}
+
+ProgramUniform::ProgramUniform() :
+	mProgram(0), mLocation(0), mIndex(0)
+{}
+
+ProgramUniform::ProgramUniform(uint32_t program, int32_t location, uint32_t index) :
+	mProgram(program), mLocation(location), mIndex(index)
+{}
 
 int32_t ProgramUniform::GetName(int32_t bufSize, char* name) const
 {
@@ -333,61 +535,61 @@ std::string ProgramUniform::GetName() const
 	return std::string(buf.get(), length);
 }
 
-void ProgramUniform::GetParam(UniformParam pname, int32_t* value) const
+void ProgramUniform::GetProp(UniformProp pname, int32_t* value) const
 {
 	GLUTIL_GL_CALL(glGetActiveUniformsiv(mProgram, 1, &mIndex, ENUM(pname), value));
 }
 
-int32_t ProgramUniform::GetParamI(UniformParam pname) const
+int32_t ProgramUniform::GetPropI(UniformProp pname) const
 {
 	int32_t value = 0;
-	GetParam(pname, &value);
+	GetProp(pname, &value);
 	return value;
 }
 
 DataType ProgramUniform::GetType() const
 {
-	return static_cast<DataType>(GetParamI(UniformParam::Type));
+	return static_cast<DataType>(GetPropI(UniformProp::Type));
 }
 
 int32_t ProgramUniform::GetSize() const
 {
-	return GetParamI(UniformParam::Size);
+	return GetPropI(UniformProp::Size);
 }
 
 int32_t ProgramUniform::GetNameLength() const
 {
-	return GetParamI(UniformParam::NameLength);
+	return GetPropI(UniformProp::NameLength);
 }
 
 uint32_t ProgramUniform::GetBlockIndex() const
 {
-	return GetParamI(UniformParam::BlockIndex);
+	return GetPropI(UniformProp::BlockIndex);
 }
 
 int32_t ProgramUniform::GetOffset() const
 {
-	return GetParamI(UniformParam::Offset);
+	return GetPropI(UniformProp::Offset);
 }
 
 int32_t ProgramUniform::GetArrayStride() const
 {
-	return GetParamI(UniformParam::ArrayStride);
+	return GetPropI(UniformProp::ArrayStride);
 }
 
 int32_t ProgramUniform::GetMatrixStride() const
 {
-	return GetParamI(UniformParam::MatrixStride);
+	return GetPropI(UniformProp::MatrixStride);
 }
 
 bool ProgramUniform::IsRowMajor() const
 {
-	return GetParamI(UniformParam::IsRowMajor) == GL_TRUE;
+	return GetPropI(UniformProp::IsRowMajor) == GL_TRUE;
 }
 
 uint32_t ProgramUniform::GetAtomicCounterBufferIndex() const
 {
-	return GetParamI(UniformParam::AtomicCounterBufferIndex);
+	return GetPropI(UniformProp::AtomicCounterBufferIndex);
 }
 
 void ProgramUniform::Get(float* value) const
@@ -955,6 +1157,7 @@ ProgramUniform& ProgramUniform::Set(double x, double y)
 ProgramUniform& ProgramUniform::SetDouble2V(const double* v)
 {
 	GLUTIL_GL_CALL(glProgramUniform2dv(mProgram, mLocation, 1, v));
+	return *this;
 }
 
 ProgramUniform& ProgramUniform::Set(const Vec2d& v)
@@ -1095,17 +1298,635 @@ ProgramUniform& ProgramUniform::Set(const Mat4x3d& v)
 	return SetDouble4x3V(v.v);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+uint32_t ProgramUniform::GetProgram() const
+{
+	return mProgram;
 }
+
+int32_t ProgramUniform::GetLocation() const
+{
+	return mLocation;
+}
+
+uint32_t ProgramUniform::GetIndex() const
+{
+	return mIndex;
+}
+
+ProgramAtomicCounterBuffer::ProgramAtomicCounterBuffer() :
+	mProgram(0), mBufferIndex(0)
+{}
+
+ProgramAtomicCounterBuffer::ProgramAtomicCounterBuffer(uint32_t program, uint32_t bufferIndex) :
+	mProgram(program), mBufferIndex(bufferIndex)
+{}
+
+void ProgramAtomicCounterBuffer::GetProp(AtomicCounterBufferProp pname, int32_t* value) const
+{
+	GLUTIL_GL_CALL(glGetActiveAtomicCounterBufferiv(mProgram, mBufferIndex, ENUM(pname), value));
+}
+
+int32_t ProgramAtomicCounterBuffer::GetPropI(AtomicCounterBufferProp pname) const
+{
+	int32_t value = 0;
+	GetProp(pname, &value);
+	return value;
+}
+
+uint32_t ProgramAtomicCounterBuffer::GetBinding() const
+{
+	return GetPropI(AtomicCounterBufferProp::Binding);
+}
+
+int32_t ProgramAtomicCounterBuffer::GetDataSize() const
+{
+	return GetPropI(AtomicCounterBufferProp::DataSize);
+}
+
+int32_t ProgramAtomicCounterBuffer::GetNumActiveAtomicCounters() const
+{
+	return GetPropI(AtomicCounterBufferProp::NumActiveAtomicCounters);
+}
+
+std::vector<int32_t> ProgramAtomicCounterBuffer::GetActiveAtomicCounterIndices() const
+{
+	int32_t count = GetNumActiveAtomicCounters();
+	if (!count)
+		return std::vector<int32_t>();
+
+	std::vector<int32_t> v(count, 0);
+	GetProp(AtomicCounterBufferProp::ActiveAtomicCounterIndices, v.data());
+	return std::move(v);
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByVertexShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByVertexShader) == GL_TRUE;
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByTessControlShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByTessControlShader) == GL_TRUE;
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByTesEvaluationShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByTessEvaluationShader) == GL_TRUE;
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByGeometryShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByGeometryShader) == GL_TRUE;
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByFragmentShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByFragmentShader) == GL_TRUE;
+}
+
+bool ProgramAtomicCounterBuffer::IsReferencedByComputeShader() const
+{
+	return GetPropI(AtomicCounterBufferProp::ReferencedByComputeShader) == GL_TRUE;
+}
+
+uint32_t ProgramAtomicCounterBuffer::GetProgram() const
+{
+	return mProgram;
+}
+
+uint32_t ProgramAtomicCounterBuffer::GetBufferIndex() const
+{
+	return mBufferIndex;
+}
+
+ProgramSubroutineUniform::ProgramSubroutineUniform() :
+	mProgram(0), mShaderType(static_cast<ShaderType>(0)), mIndex(0)
+{}
+
+ProgramSubroutineUniform::ProgramSubroutineUniform(uint32_t program, ShaderType shaderType, uint32_t index) :
+	mProgram(program), mShaderType(shaderType), mIndex(index)
+{}
+
+int32_t ProgramSubroutineUniform::GetName(int32_t bufSize, char* name) const
+{
+	int32_t length = 0;
+	GLUTIL_GL_CALL(glGetActiveSubroutineUniformName(mProgram, ENUM(mShaderType), mIndex, bufSize, &length, name));
+	return length;
+}
+
+std::string ProgramSubroutineUniform::GetName() const
+{
+	int32_t bufSize = GetNameLength();
+	if (!bufSize)
+		return std::string();
+
+	std::unique_ptr<char[]> buf(new(std::nothrow) char[bufSize]);
+	if (!buf)
+		return std::string();
+
+	int32_t length = GetName(bufSize, buf.get());
+	return std::string(buf.get(), length);
+}
+
+void ProgramSubroutineUniform::GetProp(SubroutineUniformProp pname, int32_t* value) const
+{
+	GLUTIL_GL_CALL(glGetActiveSubroutineUniformiv(mProgram, ENUM(mShaderType), mIndex, ENUM(pname), value));
+}
+
+int32_t ProgramSubroutineUniform::GetPropI(SubroutineUniformProp pname) const
+{
+	int32_t value = 0;
+	GetProp(pname, &value);
+	return value;
+}
+
+int32_t ProgramSubroutineUniform::GetNumCompatibleSubroutines() const
+{
+	return GetPropI(SubroutineUniformProp::NumCompatibleSubroutines);
+}
+
+std::vector<int32_t> ProgramSubroutineUniform::GetCompatibleSubroutines() const
+{
+	int32_t count = GetNumCompatibleSubroutines();
+	if (!count)
+		return std::vector<int32_t>();
+
+	std::vector<int32_t> v(count, 0);
+	GetProp(SubroutineUniformProp::CompatibleSubroutines, v.data());
+	return std::move(v);
+}
+
+int32_t ProgramSubroutineUniform::GetSize() const
+{
+	return GetPropI(SubroutineUniformProp::Size);
+}
+
+int32_t ProgramSubroutineUniform::GetNameLength() const
+{
+	return GetPropI(SubroutineUniformProp::NameLength);
+}
+
+uint32_t ProgramSubroutineUniform::GetProgram() const
+{
+	return mProgram;
+}
+
+ShaderType ProgramSubroutineUniform::GetShaderType() const
+{
+	return mShaderType;
+}
+
+uint32_t ProgramSubroutineUniform::GetIndex() const
+{
+	return mIndex;
+}
+
+ProgramStage::ProgramStage() :
+	mProgram(0), mShaderType(static_cast<ShaderType>(0))
+{}
+
+ProgramStage::ProgramStage(uint32_t program, ShaderType shaderType) :
+	mProgram(program), mShaderType(shaderType)
+{}
+
+void ProgramStage::GetProp(ProgramStageProp pname, int32_t* value) const
+{
+	GLUTIL_GL_CALL(glGetProgramStageiv(mProgram, ENUM(mShaderType), ENUM(pname), value));
+}
+
+int32_t ProgramStage::GetPropI(ProgramStageProp pname) const
+{
+	int32_t value = 0;
+	GetProp(pname, &value);
+	return value;
+}
+
+int32_t ProgramStage::GetNumActiveSubroutineUniforms() const
+{
+	return GetPropI(ProgramStageProp::NumActiveSubroutineUniforms);
+}
+
+int32_t ProgramStage::GetNumActiveSubroutineUniformLocations() const
+{
+	return GetPropI(ProgramStageProp::NumActiveSubroutineUniformLocations);
+}
+
+int32_t ProgramStage::GetNumActiveSubroutines() const
+{
+	return GetPropI(ProgramStageProp::NumActiveSubroutines);
+}
+
+int32_t ProgramStage::GetActiveSubroutineMaxLength() const
+{
+	return GetPropI(ProgramStageProp::ActiveSubroutineMaxLength);
+}
+
+int32_t ProgramStage::GetActiveSubroutineUniformMaxLength() const
+{
+	return GetPropI(ProgramStageProp::ActiveSubroutineUniformMaxLength);
+}
+
+uint32_t ProgramStage::GetProgram() const
+{
+	return mProgram;
+}
+
+ShaderType ProgramStage::GetShaderType() const
+{
+	return mShaderType;
+}
+
+Program::Program() :
+	GLObject(glCreateProgram())
+{}
+
+Program::Program(uint32_t program) :
+	GLObject(program)
+{}
+
+Program::~Program()
+{
+	if (*this)
+		glDeleteProgram(*this);
+}
+
+Program& Program::AttachShader(uint32_t shader)
+{
+	GLUTIL_GL_CALL(glAttachShader(*this, shader));
+	return *this;
+}
+
+Program& Program::DetachShader(uint32_t shader)
+{
+	GLUTIL_GL_CALL(glDetachShader(*this, shader));
+	return *this;
+}
+
+void Program::GetAttachedShaders(int32_t maxCount, int32_t* count, uint32_t* shaders) const
+{
+	GLUTIL_GL_CALL(glGetAttachedShaders(*this, maxCount, count, shaders));
+}
+
+AttachedShaders Program::GetAttachedShaders() const
+{
+	AttachedShaders r = { 0, { 0, 0, 0, 0, 0, 0 } };
+	GetAttachedShaders(6, &r.count, r.shaders);
+	return r;
+}
+
+bool Program::Binary(uint32_t format, const void* binary, int32_t length)
+{
+	GLUTIL_GL_CALL(glProgramBinary(*this, format, binary, length));
+	return IsLinked();
+}
+
+void Program::GetBinary(int32_t bufSize, int32_t* length, uint32_t* format, void* binary) const
+{
+	GLUTIL_GL_CALL(glGetProgramBinary(*this, bufSize, length, format, binary));
+}
+
+ProgramBinary Program::GetBinary() const
+{
+	ProgramBinary binary;
+
+	int32_t binaryLength = GetBinaryLength();
+	if (!binaryLength)
+		return std::move(binary);
+
+	binary.mBinary = malloc(binaryLength);
+	if (!binary.mBinary)
+		return std::move(binary);
+
+	GetBinary(binaryLength, &binary.mLength, &binary.mFormat, binary.mBinary);
+	return std::move(binary);
+}
+
+bool Program::Link()
+{
+	GLUTIL_GL_CALL(glLinkProgram(*this));
+	return IsLinked();
+}
+
+bool Program::Validate()
+{
+	GLUTIL_GL_CALL(glValidateProgram(*this));
+	return IsValidated();
+}
+
+void Program::Use() const
+{
+	GLUTIL_GL_CALL(glUseProgram(*this));
+}
+
+int32_t Program::GetAttribLocation(const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t loc = glGetAttribLocation(*this, name));
+	return loc;
+}
+
+int32_t Program::GetFragDataIndex(const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t index = glGetFragDataIndex(*this, name));
+	return index;
+}
+
+int32_t Program::GetFragDataLocation(const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t loc = glGetFragDataLocation(*this, name));
+	return loc;
+}
+
+int32_t Program::GetUniformLocation(const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t loc = glGetUniformLocation(*this, name));
+	return loc;
+}
+
+void Program::GetUniformIndices(int32_t count, const char** names, uint32_t* indices) const
+{
+	GLUTIL_GL_CALL(glGetUniformIndices(*this, count, names, indices));
+}
+
+uint32_t Program::GetUniformIndex(const char* name) const
+{
+	uint32_t index = 0;
+	GetUniformIndices(1, &name, &index);
+	return index;
+}
+
+ProgramUniform Program::GetUniform(const char* name) const
+{
+	return ProgramUniform(*this, GetUniformLocation(name), GetUniformIndex(name));
+}
+
+uint32_t Program::GetUniformBlockIndex(const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t index = glGetUniformBlockIndex(*this, name));
+	return index;
+}
+
+ProgramUniformBlock Program::GetUniformBlock(const char* name) const
+{
+	return ProgramUniformBlock(*this, GetUniformBlockIndex(name));
+}
+
+uint32_t Program::GetSubroutineIndex(ShaderType shaderType, const char* name) const
+{
+	GLUTIL_GL_CALL(uint32_t index = glGetSubroutineIndex(*this, ENUM(shaderType), name));
+	return index;
+}
+
+int32_t Program::GetSubroutineUniformLocation(ShaderType shaderType, const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t loc = glGetSubroutineUniformLocation(*this, ENUM(shaderType), name));
+	return loc;
+}
+
+ProgramSubroutineUniform Program::GetSubroutineUniform(ShaderType shaderType, const char* name) const
+{
+	// TODO: GetSubroutineUniformLocation might not be correct here
+	return ProgramSubroutineUniform(*this, shaderType, GetSubroutineUniformLocation(shaderType, name));
+}
+
+uint32_t Program::GetResourceIndex(ProgramInterface interface, const char* name) const
+{
+	GLUTIL_GL_CALL(uint32_t index = glGetProgramResourceIndex(*this, ENUM(interface), name));
+	return index;
+}
+
+int32_t Program::GetResourceLocation(ProgramInterface interface, const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t loc = glGetProgramResourceLocation(*this, ENUM(interface), name));
+	return loc;
+}
+
+int32_t Program::GetResourceLocationIndex(ProgramInterface interface, const char* name) const
+{
+	GLUTIL_GL_CALL(int32_t locIndex = glGetProgramResourceLocationIndex(*this, ENUM(interface), name));
+	return locIndex;
+}
+
+ProgramResource Program::GetResource(ProgramInterface interface, const char* name) const
+{
+	return ProgramResource(*this, interface, GetResourceIndex(interface, name));
+}
+
+Program& Program::BindAttribLocation(uint32_t index, const char* name)
+{
+	GLUTIL_GL_CALL(glBindAttribLocation(*this, index, name));
+	return *this;
+}
+
+Program& Program::BindFragDataLocation(uint32_t colorNumber, const char* name)
+{
+	GLUTIL_GL_CALL(glBindFragDataLocation(*this, colorNumber, name));
+	return *this;
+}
+
+Program& Program::BindFragDataLocationIndexed(uint32_t colorNumber, uint32_t index, const char* name)
+{
+	GLUTIL_GL_CALL(glBindFragDataLocationIndexed(*this, colorNumber, index, name));
+	return *this;
+}
+
+Program& Program::StorageBlockBinding(uint32_t index, uint32_t binding)
+{
+	GLUTIL_GL_CALL(glShaderStorageBlockBinding(*this, index, binding));
+	return *this;
+}
+
+Program& Program::UniformBlockBinding(uint32_t index, uint32_t binding)
+{
+	GLUTIL_GL_CALL(glUniformBlockBinding(*this, index, binding));
+	return *this;
+}
+
+int32_t Program::GetInfoLog(int32_t maxLength, char* log) const
+{
+	int32_t length = 0;
+	GLUTIL_GL_CALL(glGetProgramInfoLog(*this, maxLength, &length, log));
+	return length;
+}
+
+std::string Program::GetInfoLog() const
+{
+	int32_t bufSize = GetInfoLogLength();
+	if (!bufSize)
+		return std::string();
+
+	std::unique_ptr<char[]> buf(new(std::nothrow) char[bufSize]);
+	if (!buf)
+		return std::string();
+
+	int32_t length = GetInfoLog(bufSize, buf.get());
+	return std::string(buf.get(), length);
+}
+
+void Program::GetActiveAttrib(uint32_t index, int32_t nameBufSize, int32_t* nameLength, int32_t* size, DataType* type, char* name) const
+{
+	GLUTIL_GL_CALL(glGetActiveAttrib(*this, index, nameBufSize, nameLength, size, reinterpret_cast<GLenum*>(type), name));
+}
+
+ActiveAttrib Program::GetActiveAttrib(uint32_t index) const
+{
+	ActiveAttrib attrib;
+
+	int32_t bufSize = GetActiveAttributeMaxLength();
+	if (!bufSize)
+		return std::move(attrib);
+
+	attrib.mName = reinterpret_cast<char*>(calloc(bufSize, 1));
+	if (!attrib.mName)
+		return std::move(attrib);
+
+	GetActiveAttrib(index, bufSize, &attrib.mNameLength, &attrib.mSize, &attrib.mType, attrib.mName);
+	return std::move(attrib);
+}
+
+int32_t Program::GetActiveSubroutineName(ShaderType shaderType, uint32_t index, int32_t bufSize, char* name) const
+{
+	int32_t length = 0;
+	GLUTIL_GL_CALL(glGetActiveSubroutineName(*this, ENUM(shaderType), index, bufSize, &length, name));
+	return length;
+}
+
+std::string Program::GetActiveSubroutineName(ShaderType shaderType, uint32_t index) const
+{
+	int32_t bufSize = GetStage(shaderType).GetActiveSubroutineMaxLength();
+	if (!bufSize)
+		return std::string();
+
+	std::unique_ptr<char[]> buf(new(std::nothrow) char[bufSize]);
+	if (!buf)
+		return std::string();
+
+	int32_t length = GetActiveSubroutineName(shaderType, index, bufSize, buf.get());
+	return std::string(buf.get(), length);
+}
+
+ProgramStage Program::GetStage(ShaderType shaderType) const
+{
+	return ProgramStage(*this, shaderType);
+}
+
+Program& Program::SetParam(ProgramParam pname, int32_t value)
+{
+	GLUTIL_GL_CALL(glProgramParameteri(*this, ENUM(pname), value));
+	return *this;
+}
+
+Program& Program::SetBinaryRetrievableHint(bool binaryRetrievable)
+{
+	return SetParam(ProgramParam::BinaryRetrievableHint, binaryRetrievable);
+}
+
+Program& Program::SetSeperable(bool seperable)
+{
+	return SetParam(ProgramParam::Seperable, seperable);
+}
+
+void Program::GetProp(ProgramProp pname, int32_t* value) const
+{
+	GLUTIL_GL_CALL(glGetProgramiv(*this, ENUM(pname), value));
+}
+
+int32_t Program::GetPropI(ProgramProp pname) const
+{
+	int32_t value = 0;
+	GetProp(pname, &value);
+	return value;
+}
+
+bool Program::IsFlaggedForDelete() const
+{
+	return GetPropI(ProgramProp::DeleteStatus) == GL_TRUE;
+}
+
+bool Program::IsLinked() const
+{
+	return GetPropI(ProgramProp::LinkStatus) == GL_TRUE;
+}
+
+bool Program::IsValidated() const
+{
+	return GetPropI(ProgramProp::ValidateStatus) == GL_TRUE;
+}
+
+int32_t Program::GetInfoLogLength() const
+{
+	return GetPropI(ProgramProp::InfoLogLength);
+}
+
+int32_t Program::GetNumAttachedShaders() const
+{
+	return GetPropI(ProgramProp::NumAttachedShaders);
+}
+
+int32_t Program::GetNumActiveAtomicCounterBuffers() const
+{
+	return GetPropI(ProgramProp::NumActiveAtomicCounterBuffers);
+}
+
+int32_t Program::GetNumActiveAttributes() const
+{
+	return GetPropI(ProgramProp::NumActiveAttributes);
+}
+
+int32_t Program::GetActiveAttributeMaxLength() const
+{
+	return GetPropI(ProgramProp::ActiveAttributeMaxLength);
+}
+
+int32_t Program::GetNumActiveUniforms() const
+{
+	return GetPropI(ProgramProp::NumActiveUniforms);
+}
+
+int32_t Program::GetActiveUniformMaxLength() const
+{
+	return GetPropI(ProgramProp::ActiveUniformMaxLength);
+}
+
+int32_t Program::GetBinaryLength() const
+{
+	return GetPropI(ProgramProp::BinaryLength);
+}
+
+Vec3i Program::GetComputeWorkgroupSize() const
+{
+	Vec3i r;
+	GetProp(ProgramProp::ComputeWorkgroupSize, r.v);
+	return r;
+}
+
+TransformFeedbackBufferMode Program::GetTansformFeedbackBufferMode() const
+{
+	return static_cast<TransformFeedbackBufferMode>(GetPropI(ProgramProp::TransformFeedbackBufferMode));
+}
+
+int32_t Program::GetNumTransformFeedbackVaryings() const
+{
+	return GetPropI(ProgramProp::NumTransformFeedbackVaryings);
+}
+
+int32_t Program::GetTransformFeedbackVaryingMaxLength() const
+{
+	return GetPropI(ProgramProp::TransformFeedbackVaryingMaxLength);
+}
+
+int32_t Program::GetGeometryVerticesOut() const
+{
+	return GetPropI(ProgramProp::GeometryVerticesOut);
+}
+
+PrimitiveType Program::GetGeometryInputType() const
+{
+	return static_cast<PrimitiveType>(GetPropI(ProgramProp::GeometryInputType));
+}
+
+PrimitiveType Program::GetGeometryOutputType() const
+{
+	return static_cast<PrimitiveType>(GetPropI(ProgramProp::GeometryOutputType));
+}
+
+} // namespace GLUtil

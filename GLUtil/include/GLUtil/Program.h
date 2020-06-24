@@ -11,192 +11,230 @@ namespace GLUtil {
 
 enum class TransformFeedbackBufferMode : uint32_t
 {
-	SeparateAttribs,
-	InterleavedAttribs
+	SeparateAttribs = 0x8C8D,
+	InterleavedAttribs = 0x8C8C
 };
 
 enum class PrimitiveType : uint32_t
 {
-	Points,
-	Lines,
-	LineStrip,
-	LineLoop,
-	LineList,
-	LineStripAdjacency,
-	LinesAdjacency,
-	Triangles,
-	TriangleStrip,
-	TriangleFan,
-	TriangleStripAdjacency,
-	TrianglesAdjacency,
-	Patches
+	Points = 0x0000,
+	Lines = 0x0001,
+	LineStrip = 0x0003,
+	LineLoop = 0x0002,
+	//https://www.khronos.org/opengl/wiki/Geometry_Shader says this exists but not in glad.h
+	//LineList = , 
+	LineStripAdjacency = 0x000B,
+	LinesAdjacency = 0x000A,
+	Triangles = 0x0004,
+	TriangleStrip = 0x0005,
+	TriangleFan = 0x0006,
+	TriangleStripAdjacency = 0x000D,
+	TrianglesAdjacency = 0x000C,
+	Patches = 0x000E
 };
 
-enum class ProgramParam : uint32_t
+enum class ProgramProp : uint32_t
 {
-	DeleteStatus,
-	LinkStatus,
-	ValidateStatus,
-	InfoLogLength,
-	NumAttachedShaders,
-	NumActiveAtomicCounterBuffers,
-	NumActiveAttributes,
-	ActiveAttributeMaxLength,
-	NumActiveUniforms,
-	ActiveUniformMaxLength,
-	BinaryLength,
-	ComputeWorkgroupSize,
-	TransformFeedbackBufferMode,
-	NumTransformFeedbackVaryings,
-	TransformFeedbackVaryingMaxLength,
-	GeometryVerticesOut,
-	GeometryInputType,
-	GeometryOutputType
+	DeleteStatus = 0x8B80,
+	LinkStatus = 0x8B82,
+	ValidateStatus = 0x8B83,
+	InfoLogLength = 0x8B84,
+	NumAttachedShaders = 0x8B85,
+	NumActiveAtomicCounterBuffers = 0x92D9,
+	NumActiveAttributes = 0x8B89,
+	ActiveAttributeMaxLength = 0x8B8A,
+	NumActiveUniforms = 0x8B86,
+	ActiveUniformMaxLength = 0x8B87,
+	BinaryLength = 0x8741,
+	ComputeWorkgroupSize = 0x8267,
+	TransformFeedbackBufferMode = 0x8C7F,
+	NumTransformFeedbackVaryings = 0x8C83,
+	TransformFeedbackVaryingMaxLength = 0x8C76,
+	GeometryVerticesOut = 0x8916,
+	GeometryInputType = 0x8917,
+	GeometryOutputType = 0x8918
 };
 
-enum class AtomicCounterBufferParam : uint32_t
+enum class AtomicCounterBufferProp : uint32_t
 {
-	Binding,
-	DataSize,
-	NumActiveAtomicCounters,
-	ActiveAtomicCounterIndices,
-	ReferencedByVertexShader,
-	ReferencedByTessControlShader,
-	ReferencedByTessEvaluationShader,
-	ReferencedByGeometryShader,
-	ReferencedByFragmentShader,
-	ReferencedByComputeShader,
+	Binding = 0x92C1,
+	DataSize = 0x92C4,
+	NumActiveAtomicCounters = 0x92C5,
+	ActiveAtomicCounterIndices = 0x92C6,
+	ReferencedByVertexShader = 0x92C7,
+	ReferencedByTessControlShader = 0x92C8,
+	ReferencedByTessEvaluationShader = 0x92C9,
+	ReferencedByGeometryShader = 0x92CA,
+	ReferencedByFragmentShader = 0x92CB,
+	ReferencedByComputeShader = 0x90ED,
 };
 
-enum class SubroutineUniformParam : uint32_t
+enum class SubroutineUniformProp : uint32_t
 {
-	NumCompatibleSubroutines,
-	CompatibleSubroutines,
-	Size,
-	NameLength
+	NumCompatibleSubroutines = 0x8E4A,
+	CompatibleSubroutines = 0x8E4B,
+	Size = 0x8A38,
+	NameLength = 0x8A39
 };
 
-enum class ProgramStageParam : uint32_t
+enum class ProgramStageProp : uint32_t
 {
-	NumActiveSubroutineUniforms,
-	NumActiveSubroutineUniformLocations,
-	NumActiveSubroutines,
-	ActiveSubroutineMaxLength,
-	ActiveSubroutineUniformMaxLength
+	NumActiveSubroutineUniforms = 0x8DE6,
+	NumActiveSubroutineUniformLocations = 0x8E47,
+	NumActiveSubroutines = 0x8DE5,
+	ActiveSubroutineMaxLength = 0x8E48,
+	ActiveSubroutineUniformMaxLength = 0x8E49
 };
 
-enum class UniformParam : uint32_t
+enum class UniformProp : uint32_t
 {
-	Type,
-	Size,
-	NameLength,
-	BlockIndex,
-	Offset,
-	ArrayStride,
-	MatrixStride,
-	IsRowMajor,
-	AtomicCounterBufferIndex
+	Type = 0x8A37,
+	Size = 0x8A38,
+	NameLength = 0x8A39,
+	BlockIndex = 0x8A3A,
+	Offset = 0x8A3B,
+	ArrayStride = 0x8A3C,
+	MatrixStride = 0x8A3D,
+	IsRowMajor = 0x8A3E,
+	AtomicCounterBufferIndex = 0x92DA
 };
 
-enum class UniformBlockParam : uint32_t
+enum class UniformBlockProp : uint32_t
 {
-	Binding,
-	DataSize,
-	NameLength,
-	NumActiveUniforms,
-	ActiveUniformIndices,
-	ReferencedByVertexShader,
-	ReferencedByTessControlShader,
-	ReferencedByTessEvaluationShader,
-	ReferencedByGeometryShader,
-	ReferencedByFragmentShader,
-	ReferencedByComputeShader
+	Binding = 0x8A3F,
+	DataSize = 0x8A40,
+	NameLength = 0x8A41,
+	NumActiveUniforms = 0x8A42,
+	ActiveUniformIndices = 0x8A43,
+	ReferencedByVertexShader = 0x8A44,
+	ReferencedByTessControlShader = 0x84F0,
+	ReferencedByTessEvaluationShader = 0x84F1,
+	ReferencedByGeometryShader = 0x8A45,
+	ReferencedByFragmentShader = 0x8A46,
+	ReferencedByComputeShader = 0x90EC
 };
 
 enum class ProgramInterface : uint32_t
 {
-	AtomicCounterBuffer,
-	TransformFeedbackBuffer,
-	ProgramInput,
-	ProgramOutput,
-	Uniform,
-	TransformFeedbackVarying,
-	BufferVariable,
-	VertexSubroutineUniform,
-	TessControlSubroutineUniform,
-	TessEvaluationSubroutineUniform,
-	GeometrySubroutineUniform,
-	FragmentSubroutineUniform,
-	ComputeSubroutineUniform,
-	VertexSubroutine,
-	TessControlSubroutine,
-	TessEvaluationSubroutine,
-	GeometrySubroutine,
-	FragmentSubroutine,
-	ComputeSubroutine,
-	UniformBlock,
-	ShaderStorageBlock,
-	AtomicCounterShader,
+	AtomicCounterBuffer = 0x92C0,
+	TransformFeedbackBuffer = 0x8C8E,
+	ProgramInput = 0x92E3,
+	ProgramOutput = 0x92E4,
+	Uniform = 0x92E1,
+	TransformFeedbackVarying = 0x92F4,
+	BufferVariable = 0x92E5,
+	VertexSubroutineUniform = 0x92EE,
+	TessControlSubroutineUniform = 0x92EF,
+	TessEvaluationSubroutineUniform = 0x92F0,
+	GeometrySubroutineUniform = 0x92F1,
+	FragmentSubroutineUniform = 0x92F2,
+	ComputeSubroutineUniform = 0x92F3,
+	VertexSubroutine = 0x92E8,
+	TessControlSubroutine = 0x92E9,
+	TessEvaluationSubroutine = 0x92EA,
+	GeometrySubroutine = 0x92EB,
+	FragmentSubroutine = 0x92EC,
+	ComputeSubroutine = 0x92ED,
+	UniformBlock = 0x92E2,
+	ShaderStorageBlock = 0x92E6,
+	//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetProgramResource.xhtml says this exists but not in glad.h
+	//AtomicCounterShader = ,
 };
 
 enum class ProgramResourceProp
 {
-	NameLength,
-	Type,
-	ArraySize,
-	Offset,
-	BlockIndex,
-	ArrayStride,
-	MatrixStride,
-	IsRowMajor,
-	AtomicCounterBufferIndex,
-	TextureBuffer,
-	BufferBinding,
-	BufferDataSize,
-	NumActiveVariables,
-	ActiveVariables,
-	ReferencedByVertexShader,
-	ReferencedByTessControlShader,
-	ReferencedByTessEvaluationShader,
-	ReferencedByGeometryShader,
-	ReferencedByFragmentShader,
-	ReferencedByComputeShader,
-	NumCompatibleSubroutines,
-	CompatibleSubroutines,
-	TopLevelArraySize,
-	TopLevelArrayStride,
-	Location,
-	LocationIndex,
-	IsPerPatch,
-	LocationComponent,
-	TransformFeedbackBufferIndex,
-	TransformFeedbackBufferStride
+	NameLength = 0x92F9,
+	Type = 0x92FA,
+	ArraySize = 0x92FB,
+	Offset = 0x92FC,
+	BlockIndex = 0x92FD,
+	ArrayStride = 0x92FE,
+	MatrixStride = 0x92FF,
+	IsRowMajor = 0x9300,
+	AtomicCounterBufferIndex = 0x9301,
+	TextureBuffer = 0x8C2A,
+	BufferBinding = 0x9302,
+	BufferDataSize = 0x9303,
+	NumActiveVariables = 0x9304,
+	ActiveVariables = 0x9305,
+	ReferencedByVertexShader = 0x9306,
+	ReferencedByTessControlShader = 0x9307,
+	ReferencedByTessEvaluationShader = 0x9308,
+	ReferencedByGeometryShader = 0x9309,
+	ReferencedByFragmentShader = 0x930A,
+	ReferencedByComputeShader = 0x930B,
+	NumCompatibleSubroutines = 0x8E4A,
+	CompatibleSubroutines = 0x8E4B,
+	TopLevelArraySize = 0x930C,
+	TopLevelArrayStride = 0x930D,
+	Location = 0x930E,
+	LocationIndex = 0x930F,
+	IsPerPatch = 0x92E7,
+	LocationComponent = 0x934A,
+	TransformFeedbackBufferIndex = 0x934B,
+	TransformFeedbackBufferStride = 0x934C
 };
 
-struct ActiveAttrib
+enum class ProgramParam : uint32_t
 {
-	char* name;
-	int32_t nameLength;
-	DataType type;
-	int32_t size;
+	BinaryRetrievableHint,
+	Seperable
+};
 
+class ActiveAttrib
+{
+private:
+	char* mName;
+	int32_t mNameLength;
+	int32_t mSize;
+	DataType mType;
+
+	friend class Program;
+	
+	ActiveAttrib();
+public:
+	ActiveAttrib(const ActiveAttrib&) = delete;
+	ActiveAttrib& operator=(const ActiveAttrib&) = delete;
+
+	ActiveAttrib(ActiveAttrib&& other) noexcept;
 	~ActiveAttrib();
-};
 
-struct ActiveUniform
-{
-	char* name;
-	int32_t nameLength;
-	DataType type;
-	int32_t size;
+	ActiveAttrib& operator=(ActiveAttrib&& other) noexcept;
 
-	~ActiveUniform();
+	const char* GetName() const;
+	int32_t GetNameLength() const;
+	int32_t GetSize() const;
+	DataType GetType() const;
 };
 
 struct AttachedShaders
 {
 	int32_t count;
 	uint32_t shaders[6];
+};
+
+class ProgramBinary
+{
+private:
+	void* mBinary;
+	int32_t mLength;
+	uint32_t mFormat;
+
+	friend class Program;
+
+	ProgramBinary();
+public:
+	ProgramBinary(const ProgramBinary&) = delete;
+	ProgramBinary& operator=(const ProgramBinary&) = delete;;
+
+	ProgramBinary(ProgramBinary&& other) noexcept;
+	~ProgramBinary();
+
+	ProgramBinary& operator=(ProgramBinary&& other) noexcept;
+
+	const void* GetBinary() const;
+	int32_t GetLength() const;
+	uint32_t GetFormat() const;
 };
 
 class ProgramResource
@@ -206,6 +244,15 @@ private:
 	ProgramInterface mInterface;
 	uint32_t mIndex;
 public:
+	ProgramResource(const ProgramResource&) = default;
+	ProgramResource(ProgramResource&&) noexcept = default;
+	ProgramResource& operator=(const ProgramResource&) = default;
+	ProgramResource& operator=(ProgramResource&&) noexcept = default;
+	~ProgramResource() = default;
+
+	ProgramResource();
+	ProgramResource(uint32_t program, ProgramInterface interface, uint32_t index);
+
 	int32_t GetName(int32_t bufSize, char* name) const;
 	std::string GetName() const;
 
@@ -243,6 +290,10 @@ public:
 	int32_t GetLocationComponent() const;
 	int32_t GetTransformFeedbackBufferIndex() const;
 	int32_t GetTransformFeedbackBufferStride() const;
+
+	uint32_t GetProgram() const;
+	ProgramInterface GetInterface() const;
+	uint32_t GetIndex() const;
 };
 
 class ProgramUniformBlock
@@ -251,13 +302,22 @@ private:
 	uint32_t mProgram;
 	uint32_t mIndex;
 public:
+	ProgramUniformBlock(const ProgramUniformBlock&) = default;
+	ProgramUniformBlock(ProgramUniformBlock&&) noexcept = default;
+	ProgramUniformBlock& operator=(const ProgramUniformBlock&) = default;
+	ProgramUniformBlock& operator=(ProgramUniformBlock&&) noexcept = default;
+	~ProgramUniformBlock() = default;
+
+	ProgramUniformBlock();
+	ProgramUniformBlock(uint32_t program, uint32_t index);
+
 	ProgramUniformBlock& Binding(uint32_t binding);
 
 	int32_t GetName(int32_t bufSize, char* name) const;
 	std::string GetName() const;
 
-	void GetParam(UniformBlockParam pname, int32_t* value) const;
-	int32_t GetParamI(UniformBlockParam pname) const;
+	void GetProp(UniformBlockProp pname, int32_t* value) const;
+	int32_t GetPropI(UniformBlockProp pname) const;
 
 	uint32_t GetBinding() const;
 	int32_t GetDataSize() const;
@@ -270,6 +330,9 @@ public:
 	bool IsReferencedByGeometryShader() const;
 	bool IsReferencedByFragmentShader() const;
 	bool IsReferencedByComputeShader() const;
+
+	uint32_t GetProgram() const;
+	uint32_t GetIndex() const;
 };
 
 class ProgramUniform
@@ -279,11 +342,20 @@ private:
 	int32_t mLocation;
 	uint32_t mIndex;
 public:
+	ProgramUniform(const ProgramUniform&) = default;
+	ProgramUniform(ProgramUniform&&) noexcept = default;
+	ProgramUniform& operator=(const ProgramUniform&) = default;
+	ProgramUniform& operator=(ProgramUniform&&) noexcept = default;
+	~ProgramUniform() = default;
+
+	ProgramUniform();
+	ProgramUniform(uint32_t program, int32_t location, uint32_t index);
+
 	int32_t GetName(int32_t bufSize, char* name) const;
 	std::string GetName() const;
 
-	void GetParam(UniformParam pname, int32_t* value) const;
-	int32_t GetParamI(UniformParam pname) const;
+	void GetProp(UniformProp pname, int32_t* value) const;
+	int32_t GetPropI(UniformProp pname) const;
 
 	DataType GetType() const;
 	int32_t GetSize() const;
@@ -421,97 +493,176 @@ public:
 	ProgramUniform& Set(const Mat4x2d& v);
 	ProgramUniform& SetDouble4x3V(const double* v, bool transpose = false);
 	ProgramUniform& Set(const Mat4x3d& v);
+
+	uint32_t GetProgram() const;
+	int32_t GetLocation() const;
+	uint32_t GetIndex() const;
 };
 
-class PorgramAtomicCounterBuffer
+class ProgramAtomicCounterBuffer
 {
 private:
 	uint32_t mProgram;
 	uint32_t mBufferIndex;
 public:
-	void GetActiveAtomicCounterBufferParam(uint32_t bufferIndex, AtomicCounterBufferParam pname, int32_t* value) const;
-	int32_t GetActiveAtomicCounterBufferParamI(uint32_t bufferIndex, AtomicCounterBufferParam pname) const;
+	ProgramAtomicCounterBuffer(const ProgramAtomicCounterBuffer&) = default;
+	ProgramAtomicCounterBuffer(ProgramAtomicCounterBuffer&&) noexcept = default;
+	ProgramAtomicCounterBuffer& operator=(const ProgramAtomicCounterBuffer&) = default;
+	ProgramAtomicCounterBuffer& operator=(ProgramAtomicCounterBuffer&&) noexcept = default;
+	~ProgramAtomicCounterBuffer() = default;
 
-	uint32_t GetActiveAtomicCounterBufferBinding(uint32_t bufferIndex) const;
-	int32_t GetActiveAtomicCounterBufferDataSize(uint32_t bufferIndex) const;
-	int32_t GetActiveAtomicCounterBufferNumActiveAtomicCounters(uint32_t bufferIndex) const;
-	std::vector<int32_t> GetActiveAtomicCounterBufferAtomicCounterIndices(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByVertexShader(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByTessControlShader(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByTesEvaluationShader(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByGeometryShader(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByFragmentShader(uint32_t bufferIndex) const;
-	bool IsActiveAtomicCounterBufferReferencedByComputeShader(uint32_t bufferIndex) const;
+	ProgramAtomicCounterBuffer();
+	ProgramAtomicCounterBuffer(uint32_t program, uint32_t bufferIndex);
+
+	void GetProp(AtomicCounterBufferProp pname, int32_t* value) const;
+	int32_t GetPropI(AtomicCounterBufferProp pname) const;
+
+	uint32_t GetBinding() const;
+	int32_t GetDataSize() const;
+	int32_t GetNumActiveAtomicCounters() const;
+	std::vector<int32_t> GetActiveAtomicCounterIndices() const;
+	bool IsReferencedByVertexShader() const;
+	bool IsReferencedByTessControlShader() const;
+	bool IsReferencedByTesEvaluationShader() const;
+	bool IsReferencedByGeometryShader() const;
+	bool IsReferencedByFragmentShader() const;
+	bool IsReferencedByComputeShader() const;
+
+	uint32_t GetProgram() const;
+	uint32_t GetBufferIndex() const;
 };
 
-class ProgramSubroutine
+class ProgramSubroutineUniform
 {
 private:
-	int32_t GetActiveSubroutineName(ShaderType shaderType, uint32_t index, int32_t bufSize, char* name) const;
-	std::string GetActiveSubroutineName(ShaderType shaderType, uint32_t index) const;
+	uint32_t mProgram;
+	ShaderType mShaderType;
+	uint32_t mIndex;
+public:
+	ProgramSubroutineUniform(const ProgramSubroutineUniform&) = default;
+	ProgramSubroutineUniform(ProgramSubroutineUniform&&) noexcept = default;
+	ProgramSubroutineUniform& operator=(const ProgramSubroutineUniform&) = default;
+	ProgramSubroutineUniform& operator=(ProgramSubroutineUniform&&) noexcept = default;
+	~ProgramSubroutineUniform() = default;
 
-	int32_t GetActiveSubroutineUniformName(ShaderType shaderType, uint32_t index, int32_t bufSize, char* name) const;
-	std::string GetActiveSubroutineUniformName(ShaderType shaderType, uint32_t index) const;
+	ProgramSubroutineUniform();
+	ProgramSubroutineUniform(uint32_t program, ShaderType shaderType, uint32_t index);
 
-	void GetActiveSubroutineUniformParam(ShaderType shaderType, uint32_t index, SubroutineUniformParam pname, int32_t* value) const;
-	int32_t GetActiveSubroutineUniformParamI(ShaderType shaderType, uint32_t index, SubroutineUniformParam pname) const;
+	int32_t GetName(int32_t bufSize, char* name) const;
+	std::string GetName() const;
 
-	int32_t GetActiveSubroutineUniformNumCompatibleSubroutines(ShaderType shaderType, uint32_t index) const;
-	std::vector<int32_t> GetActiveSubroutineUniformCompatibleSubroutines(ShaderType shaderType, uint32_t index) const;
-	int32_t GetActiveSubroutineUniformSize(ShaderType shaderType, uint32_t index) const;
-	int32_t GetActiveSubroutineUniformNameLength(ShaderType shaderType, uint32_t index) const;
+	void GetProp(SubroutineUniformProp pname, int32_t* value) const;
+	int32_t GetPropI(SubroutineUniformProp pname) const;
+
+	int32_t GetNumCompatibleSubroutines() const;
+	std::vector<int32_t> GetCompatibleSubroutines() const;
+	int32_t GetSize() const;
+	int32_t GetNameLength() const;
+
+	uint32_t GetProgram() const;
+	ShaderType GetShaderType() const;
+	uint32_t GetIndex() const;
+};
+
+class ProgramStage
+{
+private:
+	uint32_t mProgram;
+	ShaderType mShaderType;
+public:
+	ProgramStage(const ProgramStage&) = default;
+	ProgramStage(ProgramStage&&) noexcept = default;
+	ProgramStage& operator=(const ProgramStage&) = default;
+	ProgramStage& operator=(ProgramStage&&) noexcept = default;
+	~ProgramStage() = default;
+
+	ProgramStage();
+	ProgramStage(uint32_t program, ShaderType shaderType);
+
+	void GetProp(ProgramStageProp pname, int32_t* value) const;
+	int32_t GetPropI(ProgramStageProp pname) const;
+
+	int32_t GetNumActiveSubroutineUniforms() const;
+	int32_t GetNumActiveSubroutineUniformLocations() const;
+	int32_t GetNumActiveSubroutines() const;
+	int32_t GetActiveSubroutineMaxLength() const;
+	int32_t GetActiveSubroutineUniformMaxLength() const;
+
+	uint32_t GetProgram() const;
+	ShaderType GetShaderType() const;
 };
 
 class Program : GLObject
 {
 public:
-	Program& BindAttribLocation(uint32_t index, const char* name);
-	Program& BindFragDataLocation(uint32_t colorNumber, const char* name);
-	Program& BindFragDataLocationIndexed(uint32_t colorNumber, uint32_t index, const char* name);
-	Program& StorageBlockBinding(uint32_t index, uint32_t binding);
-	int32_t GetAttribLocation(const char* name) const;
-	int32_t GetFragDataIndex(const char* name) const;
-	int32_t GetFragDataLocation(const char* name) const;
+	Program(const Program&) = delete;
+	Program(Program&&) noexcept = default;
+	Program& operator=(const Program&) = delete;
+	Program& operator=(Program&&) noexcept = default;
+
+	Program();
+	Program(uint32_t program);
+	virtual ~Program();
 
 	Program& AttachShader(uint32_t shader);
 	Program& DetachShader(uint32_t shader);
 	void GetAttachedShaders(int32_t maxCount, int32_t* count, uint32_t* shaders) const;
 	AttachedShaders GetAttachedShaders() const;
 
+	bool Binary(uint32_t format, const void* binary, int32_t length);
+	void GetBinary(int32_t bufSize, int32_t* length, uint32_t* format, void* binary) const;
+	ProgramBinary GetBinary() const;
+
 	bool Link();
 	bool Validate();
 
-	bool Binary(uint32_t format, const void* binary, int32_t length);
-	void GetBinary(int32_t bufSize, int32_t* length, uint32_t* format, void* binary) const;
-	std::vector<char> GetBinary(uint32_t* format = nullptr) const;
+	void Use() const;
+
+	int32_t GetAttribLocation(const char* name) const;
+	int32_t GetFragDataIndex(const char* name) const;
+	int32_t GetFragDataLocation(const char* name) const;
+
+	int32_t GetUniformLocation(const char* name) const;
+	void GetUniformIndices(int32_t count, const char** names, uint32_t* indices) const;
+	uint32_t GetUniformIndex(const char* name) const;
+	ProgramUniform GetUniform(const char* name) const;
+
+	uint32_t GetUniformBlockIndex(const char* name) const;
+	ProgramUniformBlock GetUniformBlock(const char* name) const;
+
+	uint32_t GetSubroutineIndex(ShaderType shaderType, const char* name) const;
+
+	int32_t GetSubroutineUniformLocation(ShaderType shaderType, const char* name) const;
+	ProgramSubroutineUniform GetSubroutineUniform(ShaderType shaderType, const char* name) const;
+
+	uint32_t GetResourceIndex(ProgramInterface interface, const char* name) const;
+	int32_t GetResourceLocation(ProgramInterface interface, const char* name) const;
+	int32_t GetResourceLocationIndex(ProgramInterface interface, const char* name) const;
+	ProgramResource GetResource(ProgramInterface interface, const char* name) const;
+
+	Program& BindAttribLocation(uint32_t index, const char* name);
+	Program& BindFragDataLocation(uint32_t colorNumber, const char* name);
+	Program& BindFragDataLocationIndexed(uint32_t colorNumber, uint32_t index, const char* name);
+	Program& StorageBlockBinding(uint32_t index, uint32_t binding);
+	Program& UniformBlockBinding(uint32_t index, uint32_t binding);
 
 	int32_t GetInfoLog(int32_t maxLength, char* log) const;
 	std::string GetInfoLog() const;
 
 	void GetActiveAttrib(uint32_t index, int32_t nameBufSize, int32_t* nameLength, int32_t* size, DataType* type, char* name) const;
 	ActiveAttrib GetActiveAttrib(uint32_t index) const;
-	
-	int32_t GetUniformLocation(const char* name) const;
-	uint32_t GetUniformBlockIndex(const char* name) const;
 
-	uint32_t GetSubroutineIndex(ShaderType shaderType, const char* name) const;
-	int32_t GetSubroutineUniformLocation(ShaderType shaderType, const char* name) const;
+	int32_t GetActiveSubroutineName(ShaderType shaderType, uint32_t index, int32_t bufSize, char* name) const;
+	std::string GetActiveSubroutineName(ShaderType shaderType, uint32_t index) const;
 
-	uint32_t GetResourceIndex(ProgramInterface interface, const char* name) const;
-	int32_t GetResourceLocation(ProgramInterface interface, const char* name) const;
-	int32_t GetResourceLocationIndex(ProgramInterface interface, const char* name) const;
+	ProgramStage GetStage(ShaderType shaderType) const;
 
-	void GetStageParam(ShaderType shaderType, ProgramStageParam pname, int32_t* value) const;
-	int32_t GetStageParamI(ShaderType shaderType, ProgramStageParam pname) const;
+	Program& SetParam(ProgramParam pname, int32_t value);
+	Program& SetBinaryRetrievableHint(bool binaryRetrievable);
+	Program& SetSeperable(bool seperable);
 
-	int32_t GetStageNumActiveSubroutineUniforms(ShaderType shaderType) const;
-	int32_t GetStageNumActiveSubroutineUniformLocations(ShaderType shaderType) const;
-	int32_t GetStageNumActiveSubroutines(ShaderType shaderType) const;
-	int32_t GetStageActiveSubroutineMaxLength(ShaderType shaderType) const;
-	int32_t GetStageActiveSubroutineUniformMaxLength(ShaderType shaderType) const;
-
-	void GetParam(ProgramParam pname, int32_t* value) const;
-	int32_t GetParamI(ProgramParam pname) const;
+	void GetProp(ProgramProp pname, int32_t* value) const;
+	int32_t GetPropI(ProgramProp pname) const;
 
 	bool IsFlaggedForDelete() const;
 	bool IsLinked() const;
@@ -533,4 +684,4 @@ public:
 	PrimitiveType GetGeometryOutputType() const;
 };
 
-}
+} // namespace GLUtil

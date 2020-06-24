@@ -120,41 +120,41 @@ std::string Shader::GetSource() const
 	return std::string(srcBuf.get());
 }
 
-void Shader::GetParam(ShaderParam pname, int32_t* value) const
+void Shader::GetProp(ShaderProp pname, int32_t* value) const
 {
 	GLUTIL_GL_CALL(glGetShaderiv(*this, ENUM(pname), value));
 }
 
-int32_t Shader::GetParamI(ShaderParam pname) const
+int32_t Shader::GetPropI(ShaderProp pname) const
 {
 	int32_t value = 0;
-	GetParam(pname, &value);
+	GetProp(pname, &value);
 	return value;
 }
 
 ShaderType Shader::GetType() const
 {
-	return static_cast<ShaderType>(GetParamI(ShaderParam::Type));
+	return static_cast<ShaderType>(GetPropI(ShaderProp::Type));
 }
 
 bool Shader::IsTaggedForDelete() const
 {
-	return GetParamI(ShaderParam::DeleteStatus) == GL_TRUE;
+	return GetPropI(ShaderProp::DeleteStatus) == GL_TRUE;
 }
 
 bool Shader::IsCompiled() const
 {
-	return GetParamI(ShaderParam::CompileStatus) == GL_TRUE;
+	return GetPropI(ShaderProp::CompileStatus) == GL_TRUE;
 }
 
 int32_t Shader::GetInfoLogLength() const
 {
-	return GetParamI(ShaderParam::InfoLogLength);
+	return GetPropI(ShaderProp::InfoLogLength);
 }
 
 int32_t Shader::GetSourceLength() const
 {
-	return GetParamI(ShaderParam::SourceLength);
+	return GetPropI(ShaderProp::SourceLength);
 }
 
-}
+} // namespace GLUtil

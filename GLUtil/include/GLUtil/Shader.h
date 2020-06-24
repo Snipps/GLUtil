@@ -17,7 +17,7 @@ enum class ShaderType : uint32_t
 	Compute = 0x91B9
 };
 
-enum class ShaderParam : uint32_t
+enum class ShaderProp : uint32_t
 {
 	Type = 0x8B4F,
 	DeleteStatus = 0x8B80,
@@ -60,9 +60,9 @@ public:
 	int32_t GetSource(int32_t bufSize, char* src) const;
 	std::string GetSource() const;
 
-	void GetParam(ShaderParam pname, int32_t* value) const;
+	void GetProp(ShaderProp pname, int32_t* value) const;
 	
-	int32_t GetParamI(ShaderParam pname) const;
+	int32_t GetPropI(ShaderProp pname) const;
 
 	ShaderType GetType() const;
 	bool IsTaggedForDelete() const;
@@ -71,4 +71,4 @@ public:
 	int32_t GetSourceLength() const;
 };
 
-}
+} // namespace GLUtil

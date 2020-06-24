@@ -61,4 +61,4 @@ GLObject::operator bool() const
 	return mObject != 0;
 }
 
-}
+} // namespace GLUtil

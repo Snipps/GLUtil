@@ -462,4 +462,4 @@ Vec<3, T> Cross(const Vec<3, T>& a, const Vec<3, T>& b)
 	return (Vec<3, T>(a.y, a.z, a.x) * Vec<3, T>(b.z, b.x, b.y)) - (Vec<3, T>(a.z, a.x, a.y) * Vec<3, T>(b.y, b.z, b.x));
 }
 
-}
+} // namespace GLUtil

@@ -66,4 +66,4 @@ using Mat4x3 = Mat<4, 3, T>;
 using Mat4x3f = Mat4x3<float>;
 using Mat4x3d = Mat4x3<double>;
 
-}
+} // namespace GLUtil

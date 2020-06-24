@@ -203,13 +203,13 @@ void Buffer::BindRange(BufferTarget target, uint32_t index, intptr_t offset, int
 	BindBufferRange(target, index, *this, offset, size);
 }
 
-void Buffer::GetParam(BufferParam pname, int32_t* value, BufferTarget target) const
+void Buffer::GetProp(BufferProp pname, int32_t* value, BufferTarget target) const
 {
 	BUFFER_BIND;
 	GLUTIL_GL_CALL(glGetBufferParameteriv(ENUM(target), ENUM(pname), value));
 }
 
-void Buffer::GetParam(BufferParam pname, int64_t* value, BufferTarget target) const
+void Buffer::GetProp(BufferProp pname, int64_t* value, BufferTarget target) const
 {
 	BUFFER_BIND;
 	GLUTIL_GL_CALL(glGetBufferParameteri64v(ENUM(target), ENUM(pname), value));
@@ -221,17 +221,17 @@ void Buffer::GetPointer(BufferPointer pname, void** ptr, BufferTarget target) co
 	GLUTIL_GL_CALL(glGetBufferPointerv(ENUM(target), ENUM(pname), ptr));
 }
 
-int32_t Buffer::GetParamI(BufferParam pname, BufferTarget target) const
+int32_t Buffer::GetPropI(BufferProp pname, BufferTarget target) const
 {
 	int32_t param = 0;
-	GetParam(pname, &param, target);
+	GetProp(pname, &param, target);
 	return param;
 }
 
-int64_t Buffer::GetParamI64(BufferParam pname, BufferTarget target) const
+int64_t Buffer::GetPropI64(BufferProp pname, BufferTarget target) const
 {
 	int64_t param = 0;
-	GetParam(pname, &param, target);
+	GetProp(pname, &param, target);
 	return param;
 }
 
@@ -244,47 +244,47 @@ void* Buffer::GetPointer(BufferPointer pname, BufferTarget target) const
 
 BufferAccess Buffer::GetAccess(BufferTarget target) const
 {
-	return static_cast<BufferAccess>(GetParamI(BufferParam::Access, target));
+	return static_cast<BufferAccess>(GetPropI(BufferProp::Access, target));
 }
 
 Flags<BufferAccessFlags> Buffer::GetAccessFlags(BufferTarget target) const
 {
-	return GetParamI(BufferParam::AccessFlags, target);
+	return GetPropI(BufferProp::AccessFlags, target);
 }
 
 bool Buffer::IsImmutableStorage(BufferTarget target) const
 {
-	return GetParamI(BufferParam::ImmutableStorage, target) == GL_TRUE;
+	return GetPropI(BufferProp::ImmutableStorage, target) == GL_TRUE;
 }
 
 bool Buffer::IsMapped(BufferTarget target) const
 {
-	return GetParamI(BufferParam::Mapped, target) == GL_TRUE;
+	return GetPropI(BufferProp::Mapped, target) == GL_TRUE;
 }
 
 int64_t Buffer::GetMapLength(BufferTarget target) const
 {
-	return GetParamI64(BufferParam::MapLength, target);
+	return GetPropI64(BufferProp::MapLength, target);
 }
 
 int64_t Buffer::GetMapOffset(BufferTarget target) const
 {
-	return GetParamI64(BufferParam::MapOffset, target);
+	return GetPropI64(BufferProp::MapOffset, target);
 }
 
 int64_t Buffer::GetSize(BufferTarget target) const
 {
-	return GetParamI64(BufferParam::Size, target);
+	return GetPropI64(BufferProp::Size, target);
 }
 
 Flags<BufferStorageFlags> Buffer::GetStorageFlags(BufferTarget target) const
 {
-	return GetParamI(BufferParam::StorageFlags, target);
+	return GetPropI(BufferProp::StorageFlags, target);
 }
 
 BufferUsage Buffer::GetUsage(BufferTarget target) const
 {
-	return static_cast<BufferUsage>(GetParamI(BufferParam::Usage, target));
+	return static_cast<BufferUsage>(GetPropI(BufferProp::Usage, target));
 }
 
 void* Buffer::GetMapPointer(BufferTarget target) const
@@ -372,12 +372,12 @@ void Buffer::BindRange(BufferTarget target, uint32_t index, intptr_t offset, int
 	BindBufferRange(target, index, *this, offset, size);
 }
 
-void Buffer::GetParam(BufferParam pname, int32_t* value) const
+void Buffer::GetProp(BufferProp pname, int32_t* value) const
 {
 	GLUTIL_GL_CALL(glGetNamedBufferParameteriv(*this, ENUM(pname), value));
 }
 
-void Buffer::GetParam(BufferParam pname, int64_t* value) const
+void Buffer::GetProp(BufferProp pname, int64_t* value) const
 {
 	GLUTIL_GL_CALL(glGetNamedBufferParameteri64v(*this, ENUM(pname), value));
 }
@@ -387,17 +387,17 @@ void Buffer::GetPointer(BufferPointer pname, void** ptr) const
 	GLUTIL_GL_CALL(glGetNamedBufferPointerv(*this, ENUM(pname), ptr));
 }
 
-int32_t Buffer::GetParamI(BufferParam pname) const
+int32_t Buffer::GetPropI(BufferProp pname) const
 {
 	int32_t value = 0;
-	GetParam(pname, &value);
+	GetProp(pname, &value);
 	return value;
 }
 
-int64_t Buffer::GetParamI64(BufferParam pname) const
+int64_t Buffer::GetPropI64(BufferProp pname) const
 {
 	int64_t value = 0;
-	GetParam(pname, &value);
+	GetProp(pname, &value);
 	return value;
 }
 
@@ -410,47 +410,47 @@ void* Buffer::GetPointer(BufferPointer pname) const
 
 BufferAccess Buffer::GetAccess() const
 {
-	return static_cast<BufferAccess>(GetParamI(BufferParam::Access));
+	return static_cast<BufferAccess>(GetPropI(BufferProp::Access));
 }
 
 Flags<BufferAccessFlags> Buffer::GetAccessFlags() const
 {
-	return GetParamI(BufferParam::AccessFlags);
+	return GetPropI(BufferProp::AccessFlags);
 }
 
 bool Buffer::IsImmutableStorage() const
 {
-	return GetParamI(BufferParam::ImmutableStorage) == GL_TRUE;
+	return GetPropI(BufferProp::ImmutableStorage) == GL_TRUE;
 }
 
 bool Buffer::IsMapped() const
 {
-	return GetParamI(BufferParam::Mapped) == GL_TRUE;
+	return GetPropI(BufferProp::Mapped) == GL_TRUE;
 }
 
 int64_t Buffer::GetMapLength() const
 {
-	return GetParamI64(BufferParam::MapLength);
+	return GetPropI64(BufferProp::MapLength);
 }
 
 int64_t Buffer::GetMapOffset() const
 {
-	return GetParamI64(BufferParam::MapOffset);
+	return GetPropI64(BufferProp::MapOffset);
 }
 
 int64_t Buffer::GetSize() const
 {
-	return GetParamI64(BufferParam::Size);
+	return GetPropI64(BufferProp::Size);
 }
 
 Flags<BufferStorageFlags> Buffer::GetStorageFlags() const
 {
-	return GetParamI(BufferParam::StorageFlags);
+	return GetPropI(BufferProp::StorageFlags);
 }
 
 BufferUsage Buffer::GetUsage() const
 {
-	return static_cast<BufferUsage>(GetParamI(BufferParam::Usage));
+	return static_cast<BufferUsage>(GetPropI(BufferProp::Usage));
 }
 
 void* Buffer::GetMapPointer() const
