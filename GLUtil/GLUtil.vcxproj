@@ -33,6 +33,7 @@
     <ClInclude Include="include\GLUtil\Object.h" />
     <ClInclude Include="include\GLUtil\Program.h" />
     <ClInclude Include="include\GLUtil\Shader.h" />
+    <ClInclude Include="include\GLUtil\Texture.h" />
     <ClInclude Include="include\GLUtil\Vec.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />

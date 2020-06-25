@@ -91,6 +91,18 @@ enum class DataType : uint32_t
 	UnsignedIntSampler2DRect = 0x8DD5
 };
 
+enum class CompareFunc : uint32_t
+{
+	LessEqual,
+	GreaterEqual,
+	Less,
+	Greater,
+	Equal,
+	NotEqual,
+	Always,
+	Never
+};
+
 uint32_t GetDataTypeSize(DataType type);
 
 template<typename E, typename I = typename std::underlying_type<E>::type>
