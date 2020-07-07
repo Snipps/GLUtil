@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vec.h"
+
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -103,7 +105,19 @@ enum class CompareFunc : uint32_t
 	Never
 };
 
+enum class Access : uint32_t
+{
+	ReadOnly,
+	WriteOnly,
+	ReadWrite
+};
+
 uint32_t GetDataTypeSize(DataType type);
+
+struct Box
+{
+	Vec2i offset, size;
+};
 
 template<typename E, typename I = typename std::underlying_type<E>::type>
 class Flags

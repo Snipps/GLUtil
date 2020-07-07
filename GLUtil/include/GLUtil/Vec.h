@@ -252,24 +252,33 @@ using Vec2 = Vec<2, T>;
 
 using Vec2f = Vec2<float>;
 using Vec2d = Vec2<double>;
-using Vec2i = Vec2<int>;
-using Vec2ui = Vec2<unsigned int>;
+using Vec2i = Vec2<int32_t>;
+using Vec2ui = Vec2<uint32_t>;
+using Vec2i64 = Vec2<int64_t>;
+using Vec2ui64 = Vec2<uint64_t>;
+using Vec2b = Vec2<bool>;
 
 template<typename T>
 using Vec3 = Vec<3, T>;
 
 using Vec3f = Vec3<float>;
 using Vec3d = Vec3<double>;
-using Vec3i = Vec3<int>;
-using Vec3ui = Vec3<unsigned int>;
+using Vec3i = Vec3<int32_t>;
+using Vec3ui = Vec3<uint32_t>;
+using Vec3i64 = Vec3<int64_t>;
+using Vec3ui64 = Vec3<uint64_t>;
+using Vec3b = Vec3<bool>;
 
 template<typename T>
 using Vec4 = Vec<4, T>;
 
 using Vec4f = Vec4<float>;
 using Vec4d = Vec4<double>;
-using Vec4i = Vec4<int>;
-using Vec4ui = Vec4<unsigned int>;
+using Vec4i = Vec4<int32_t>;
+using Vec4ui = Vec4<uint32_t>;
+using Vec4i64 = Vec4<int64_t>;
+using Vec4ui64 = Vec4<uint64_t>;
+using Vec4b = Vec4<bool>;
 
 template<unsigned N, typename T>
 Vec<N, T> operator+(const Vec<N, T>& a, const Vec<N, T>& b)

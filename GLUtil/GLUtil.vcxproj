@@ -20,23 +20,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Buffer.cpp" />
+    <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Program.cpp" />
+    <ClCompile Include="src\Sampler.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\State.cpp" />
+    <ClCompile Include="src\stb.c" />
+    <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GLUtil\Buffer.h" />
     <ClInclude Include="include\GLUtil\Common.h" />
+    <ClInclude Include="include\GLUtil\Debug.h" />
     <ClInclude Include="include\GLUtil\Mat.h" />
     <ClInclude Include="include\GLUtil\Math.h" />
     <ClInclude Include="include\GLUtil\Object.h" />
     <ClInclude Include="include\GLUtil\Program.h" />
+    <ClInclude Include="include\GLUtil\Sampler.h" />
     <ClInclude Include="include\GLUtil\Shader.h" />
+    <ClInclude Include="include\GLUtil\State.h" />
     <ClInclude Include="include\GLUtil\Texture.h" />
     <ClInclude Include="include\GLUtil\Vec.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />
+    <ClInclude Include="include\stb\image.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
