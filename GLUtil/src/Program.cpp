@@ -1,6 +1,6 @@
 #include <GLUtil/Program.h>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 #include <memory>
 #include <cstdlib>

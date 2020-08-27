@@ -2,7 +2,7 @@
 
 #include <GLUtil/Common.h>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 #define BUFFER_BIND BufferBind _bind(target, *this)
 #define ENUM(e) static_cast<GLenum>(e)
@@ -118,181 +118,6 @@ BufferBind::~BufferBind()
 {
 	BindBuffer(mTarget, mPrev);
 }
-
-Buffer::Buffer(BufferTarget target)
-{
-	GLUTIL_GL_CALL(glGenBuffers(1, GetIDPtr()));
-}
-
-Buffer::Buffer(uint32_t buffer) :
-	GLObject(buffer)
-{}
-
-Buffer::Buffer(intptr_t size, const void* data, Flags<BufferStorageFlags> flags, BufferTarget target)
-{
-	GLUTIL_GL_CALL(glGenBuffers(1, GetIDPtr()));
-	Storage(size, data, flags, target);
-}
-
-Buffer::Buffer(intptr_t size, const void* data, BufferUsage usage, BufferTarget target)
-{
-	GLUTIL_GL_CALL(glGenBuffers(1, GetIDPtr()));
-	Data(size, data, usage, target);
-}
-
-Buffer::~Buffer()
-{
-	if (*this) {
-		GLUTIL_GL_CALL(glDeleteBuffers(1, GetIDPtr()));
-	}
-}
-
-Buffer& Buffer::Storage(intptr_t size, const void* data, Flags<BufferStorageFlags> flags, BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glBufferStorage(ENUM(target), size, data, flags));
-	return *this;
-}
-
-Buffer& Buffer::Data(intptr_t size, const void* data, BufferUsage usage, BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glBufferData(ENUM(target), size, data, ENUM(usage)));
-	return *this;
-}
-
-Buffer& Buffer::SubData(intptr_t offset, intptr_t size, const void* data, BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glBufferSubData(ENUM(target), offset, size, data));
-	return *this;
-}
-
-void* Buffer::Map(BufferAccess access, BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(void* ptr = glMapBuffer(ENUM(target), ENUM(access)));
-	return ptr;
-}
-
-void* Buffer::MapRange(intptr_t offset, intptr_t length, Flags<BufferAccessFlags> accessFLags, BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(void* ptr = glMapBufferRange(ENUM(target), offset, length, accessFLags));
-	return ptr;
-}
-
-void Buffer::Unmap(BufferTarget target)
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glUnmapBuffer(ENUM(target)));
-}
-
-void Buffer::Bind(BufferTarget target) const
-{
-	BindBuffer(target, *this);
-}
-
-void Buffer::BindBase(BufferTarget target, uint32_t index) const
-{
-	BindBufferBase(target, index, *this);
-}
-
-void Buffer::BindRange(BufferTarget target, uint32_t index, intptr_t offset, intptr_t size) const
-{
-	BindBufferRange(target, index, *this, offset, size);
-}
-
-void Buffer::GetProp(BufferProp pname, int32_t* value, BufferTarget target) const
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glGetBufferParameteriv(ENUM(target), ENUM(pname), value));
-}
-
-void Buffer::GetProp(BufferProp pname, int64_t* value, BufferTarget target) const
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glGetBufferParameteri64v(ENUM(target), ENUM(pname), value));
-}
-
-void Buffer::GetPointer(BufferPointer pname, void** ptr, BufferTarget target) const
-{
-	BUFFER_BIND;
-	GLUTIL_GL_CALL(glGetBufferPointerv(ENUM(target), ENUM(pname), ptr));
-}
-
-int32_t Buffer::GetPropI(BufferProp pname, BufferTarget target) const
-{
-	int32_t param = 0;
-	GetProp(pname, &param, target);
-	return param;
-}
-
-int64_t Buffer::GetPropI64(BufferProp pname, BufferTarget target) const
-{
-	int64_t param = 0;
-	GetProp(pname, &param, target);
-	return param;
-}
-
-void* Buffer::GetPointer(BufferPointer pname, BufferTarget target) const
-{
-	void* ptr = nullptr;
-	GetPointer(pname, &ptr, target);
-	return ptr;
-}
-
-BufferAccess Buffer::GetAccess(BufferTarget target) const
-{
-	return static_cast<BufferAccess>(GetPropI(BufferProp::Access, target));
-}
-
-Flags<BufferAccessFlags> Buffer::GetAccessFlags(BufferTarget target) const
-{
-	return GetPropI(BufferProp::AccessFlags, target);
-}
-
-bool Buffer::IsImmutableStorage(BufferTarget target) const
-{
-	return GetPropI(BufferProp::ImmutableStorage, target) == GL_TRUE;
-}
-
-bool Buffer::IsMapped(BufferTarget target) const
-{
-	return GetPropI(BufferProp::Mapped, target) == GL_TRUE;
-}
-
-int64_t Buffer::GetMapLength(BufferTarget target) const
-{
-	return GetPropI64(BufferProp::MapLength, target);
-}
-
-int64_t Buffer::GetMapOffset(BufferTarget target) const
-{
-	return GetPropI64(BufferProp::MapOffset, target);
-}
-
-int64_t Buffer::GetSize(BufferTarget target) const
-{
-	return GetPropI64(BufferProp::Size, target);
-}
-
-Flags<BufferStorageFlags> Buffer::GetStorageFlags(BufferTarget target) const
-{
-	return GetPropI(BufferProp::StorageFlags, target);
-}
-
-BufferUsage Buffer::GetUsage(BufferTarget target) const
-{
-	return static_cast<BufferUsage>(GetPropI(BufferProp::Usage, target));
-}
-
-void* Buffer::GetMapPointer(BufferTarget target) const
-{
-	return GetPointer(BufferPointer::Map, target);
-}
-
-namespace DSA {
 
 Buffer::Buffer()
 {
@@ -457,7 +282,5 @@ void* Buffer::GetMapPointer() const
 {
 	return GetPointer(BufferPointer::Map);
 }
-
-} // namespace DSA
 
 } // namespace GLUtil

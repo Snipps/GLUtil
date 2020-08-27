@@ -9,225 +9,225 @@ namespace GLUtil {
 
 enum class TextureInternalFormat : uint32_t
 {
-	R8,
-	R8Snorm,
-	R16,
-	R16Snorm,
-	RG8,
-	RG8Snorm,
-	RG16Snorm,
-	R3G3B2,
-	RGB4,
-	RGB5,
-	RGB8,
-	RGB8Snorm,
-	RGB10,
-	RGB12,
-	RGB16Snorm,
-	RGBA2,
-	RGBA4,
-	RGB5A1,
-	RGBA8,
-	RGBA8Snorm,
-	RGB10A2,
-	RGB10A2UI,
-	RGBA12,
-	RGBA16,
-	SRGB8,
-	SRGB8A8,
-	R16F,
-	RG16F,
-	RGB16F,
-	RGBA16F,
-	R32F,
-	RG32F,
-	RGB32F,
-	RGBA32F,
-	RG11FB10F,
-	RGB9E5,
-	R8I,
-	R8UI,
-	R16I,
-	R16UI,
-	RG8I,
-	RG8UI,
-	RG16I,
-	RG16UI,
-	RG32I,
-	RG32UI,
-	RGB8I,
-	RGB8UI,
-	RGB16I,
-	RGB16UI,
-	RGB32I,
-	RGB32UI,
-	RGBA8I,
-	RGBA8UI,
-	RGBA16I,
-	RGBA16UI,
-	RGBA32I,
-	RGBA32UI
+	R8 = 0x8229,
+	R8Snorm = 0x8F94,
+	R16 = 0x822A,
+	R16Snorm = 0x8F98,
+	RG8 = 0x822B,
+	RG8Snorm = 0x8F95,
+	RG16Snorm = 0x8F99,
+	R3G3B2 = 0x2A10,
+	RGB4 = 0x804F,
+	RGB5 = 0x8050,
+	RGB8 = 0x8051,
+	RGB8Snorm = 0x8F96,
+	RGB10 = 0x8052,
+	RGB12 = 0x8053,
+	RGB16Snorm = 0x8F9A,
+	RGBA2 = 0x8055,
+	RGBA4 = 0x8056,
+	RGB5A1 = 0x8057,
+	RGBA8 = 0x8058,
+	RGBA8Snorm = 0x8F97,
+	RGB10A2 = 0x8059,
+	RGB10A2UI = 0x906F,
+	RGBA12 = 0x805A,
+	RGBA16 = 0x805B,
+	SRGB8 = 0x8C41,
+	SRGB8A8 = 0x8C43,
+	R16F = 0x822D,
+	RG16F = 0x822F,
+	RGB16F = 0x881B,
+	RGBA16F = 0x881A,
+	R32F = 0x822E,
+	RG32F = 0x8230,
+	RGB32F = 0x8815,
+	RGBA32F = 0x8814,
+	RG11FB10F = 0x8C3A,
+	RGB9E5 = 0x8C3D,
+	R8I = 0x8231,
+	R8UI = 0x8232,
+	R16I = 0x8233,
+	R16UI = 0x8234,
+	RG8I = 0x8237,
+	RG8UI = 0x8238,
+	RG16I = 0x8239,
+	RG16UI = 0x823A,
+	RG32I = 0x8235,
+	RG32UI = 0x8236,
+	RGB8I = 0x8D8F,
+	RGB8UI = 0x8D7D,
+	RGB16I = 0x8D89,
+	RGB16UI = 0x8D77,
+	RGB32I = 0x8D83,
+	RGB32UI = 0x8D71,
+	RGBA8I = 0x8D8E,
+	RGBA8UI = 0x8D7C,
+	RGBA16I = 0x8D88,
+	RGBA16UI = 0x8D76,
+	RGBA32I = 0x8D82,
+	RGBA32UI = 0x8D70,
+
+	RGB_DXT1 = 0x83F0,
+	SRGBA_DXT1 = 0x8C4C,
+	RGBA_DXT1 = 0x83F1,
+	SRGBA_DXT1 = 0x8C4D,
+	RGBA_DXT3 = 0x83F2,
+	SRGBA_DXT3 = 0x8C4E,
+	RGBA_DXT5 = 0x83F3,
+	SRGBA_DXT5 = 0x8C4F
 };
 
 enum class TextureBaseFormat : uint32_t
 {
-	R,
-	RG,
-	RGB,
-	RGBA
+	R = 0x1903,
+	RG = 0x8227,
+	RGB = 0x1907,
+	RGBA = 0x1908
 };
 
 enum class TextureTarget : uint32_t
 {
-	Tex1D,
-	Tex2D,
-	Tex3D,
-	Tex1DArray,
-	Tex2DArray,
-	TexRectangle,
-	TexCubeMap,
-	TexCubeMapArray,
-	TexBuffer,
-	Tex2DMultisample,
-	Tex2DMultisampleArray,
-	TexCubeMapPositiveX,
-	TexCubeMapNegativeX,
-	TexCubeMapPositiveY,
-	TexCubeMapNegativeY,
-	TexCubeMapPositiveZ,
-	TexCubeMapNegativeZ
+	Tex1D = 0x0DE0,
+	Tex2D = 0x0DE1,
+	Tex3D = 0x806F,
+	Tex1DArray = 0x8C18,
+	Tex2DArray = 0x8C1A,
+	TexRectangle = 0x84F5,
+	TexCubeMap = 0x8513,
+	TexCubeMapArray = 0x9009,
+	TexBuffer = 0x8C2A,
+	Tex2DMultisample = 0x9100,
+	Tex2DMultisampleArray = 0x9102,
+	TexCubeMapPositiveX = 0x8515,
+	TexCubeMapNegativeX = 0x8516,
+	TexCubeMapPositiveY = 0x8517,
+	TexCubeMapNegativeY  = 0x8518,
+	TexCubeMapPositiveZ = 0x8519,
+	TexCubeMapNegativeZ = 0x851A
 };
 
 enum class TextureBinding : uint32_t
 {
-	Tex1D,
-	Tex2D,
-	Tex3D,
-	Tex1DArray,
-	Tex2DArray,
-	TexRectangle,
-	TexCubeMap,
-	TexCubeMapArray,
-	TexBuffer,
-	Tex2DMultisample,
-	Tex2DMultisampleArray
+	Tex1D = 0x8068,
+	Tex2D = 0x8069,
+	Tex3D = 0x806A,
+	Tex1DArray = 0x8C1C,
+	Tex2DArray = 0x8C1D,
+	TexRectangle = 0x84F6,
+	TexCubeMap = 0x8514,
+	TexCubeMapArray = 0x900A,
+	TexBuffer = 0x8C2C,
+	Tex2DMultisample = 0x9104,
+	Tex2DMultisampleArray = 0x9105
 };
 
 enum class TextureProp : uint32_t
 {
-	DepthStencilMode,
-	MagFilter,
-	MinFilter,
-	MinLod,
-	MaxLod,
-	BaseLevel,
-	MaxLevel,
-	SwizzleR,
-	SwizzleG,
-	SwizzleB,
-	SwizzleA,
-	SwizzleRGBA,
-	WrapS,
-	WrapT,
-	WrapR,
-	BorderColor,
-	CompareMode,
-	CompareFunc,
-	ViewMinLevel,
-	ViewNumLevels,
-	ViewMinLayer,
-	ViewNumLayers,
-	NumImmutableLevels,
-	ImageFormatCompatibilityType,
-	IsImmutableFormat,
-	Target
+	DepthStencilMode = 0x90EA,
+	MagFilter = 0x2800,
+	MinFilter = 0x2801,
+	MinLod = 0x813A,
+	MaxLod = 0x813B,
+	BaseLevel = 0x813C,
+	MaxLevel = 0x813D,
+	SwizzleR = 0x8E42,
+	SwizzleG = 0x8E43,
+	SwizzleB = 0x8E44,
+	SwizzleA = 0x8E45,
+	SwizzleRGBA = 0x8E46,
+	WrapS = 0x2802,
+	WrapT = 0x2803,
+	WrapR = 0x8072,
+	BorderColor = 0x1004,
+	CompareMode = 0x884C,
+	CompareFunc = 0x884D,
+	ViewMinLevel = 0x82DB,
+	ViewNumLevels = 0x82DC,
+	ViewMinLayer = 0x82DD,
+	ViewNumLayers = 0x82DE,
+	NumImmutableLevels = 0x82DF,
+	ImageFormatCompatibilityType = 0x90C7,
+	IsImmutableFormat = 0x912F,
+	Target = 0x1006
 };
 
 enum class TextureParam : uint32_t
 {
-	DepthStencilMode,
-	BaseLevel,
-	BorderColor,
-	CompareFunc,
-	CompareMode,
-	LodBias,
-	MinFilter,
-	MagFilter,
-	MinLod,
-	MaxLod,
-	MaxLevel,
-	SwizzleR,
-	SwizzleG,
-	SwizzleB,
-	SwizzleA,
-	SwizzleRGBA,
-	WrapS,
-	WrapT,
-	WrapR
+	DepthStencilMode = 0x90EA,
+	BaseLevel = 0x813C,
+	BorderColor = 0x1004,
+	CompareFunc = 0x884D,
+	CompareMode = 0x884C,
+	LodBias = 0x8501,
+	MinFilter = 0x2801,
+	MagFilter = 0x2800,
+	MinLod = 0x813A,
+	MaxLod = 0x813B,
+	MaxLevel = 0x813D,
+	SwizzleR = 0x8E42,
+	SwizzleG = 0x8E43,
+	SwizzleB = 0x8E44,
+	SwizzleA = 0x8E45,
+	SwizzleRGBA = 0x8E46,
+	WrapS = 0x2802,
+	WrapT = 0x2803,
+	WrapR = 0x8072
 };
 
 enum class TextureDepthStencilMode : uint32_t
 {
-	DepthComponent,
-	StencilIndex
+	DepthComponent = 0x1902,
+	StencilIndex = 0x1901
 };
 
 enum class TextureSwizzle : uint32_t
 {
-	Red,
-	Green,
-	Blue,
-	Alpha,
-	Zero,
-	One
+	Red = 0x1903,
+	Green = 0x1904,
+	Blue = 0x1905,
+	Alpha = 0x1906,
+	Zero = 0,
+	One = 1
 };
-
-enum class TextureWrap : uint32_t
-{
-	ClampToEdge,
-	ClampToBorder,
-	MirroredRepeat,
-	Repeat,
-	MirrorClampToEdge
-};
-
 enum class ImageFormatCompatibilityType : uint32_t
 {
-	BySize,
-	ByClass,
-	None
+	BySize = 0x90C8,
+	ByClass = 0x90C9,
+	None = 0
 };
 
 enum class TextureLevelProp : uint32_t
 {
-	Width,
-	Height,
-	Depth,
-	InternalFormat,
-	RedType,
-	GreenType,
-	BlueType,
-	AlphaType,
-	DepthType,
-	RedSize,
-	GreenSize,
-	BlueSize,
-	AlphaSize,
-	DepthSize,
-	IsCompressed,
-	CompressedImageSize,
-	BufferOffset,
-	BufferSize
+	Width = 0x1000,
+	Height = 0x1001,
+	Depth = 0x8071,
+	InternalFormat = 0x1003,
+	RedType = 0x8C10,
+	GreenType = 0x8C11,
+	BlueType = 0x8C12,
+	AlphaType = 0x8C13,
+	DepthType = 0x8C16,
+	RedSize = 0x805C,
+	GreenSize = 0x805D,
+	BlueSize = 0x805E,
+	AlphaSize = 0x805F,
+	DepthSize = 0x884A,
+	StencilSize = 0x88F1,
+	IsCompressed = 0x86A1,
+	CompressedImageSize = 0x86A0,
+	BufferOffset = 0x919D,
+	BufferSize = 0x919E
 };
 
 enum class TextureComponentType : uint32_t
 {
-	None,
-	SignedNormalized,
-	UnsignedNormalized,
-	Float,
-	Int,
-	UnsignedInt
+	None = 0,
+	SignedNormalized = 0x8F9C,
+	UnsignedNormalized = 0x8C17,
+	Float = 0x1406,
+	Int = 0x1404,
+	UnsignedInt = 0x1405
 };
 
 struct TextureSwizzleRGBA
@@ -273,7 +273,6 @@ uint32_t GetBoundTexture(TextureTarget target);
 uint32_t GetActiveTextureUnit();
 void SetActiveTextureUnit(uint32_t unit);
 
-namespace DSA {
 
 class Texture : GLObject
 {
@@ -376,6 +375,7 @@ public:
 	int32_t GetLevelBlueSize(int32_t level) const;
 	int32_t GetLevelAlphaSize(int32_t level) const;
 	int32_t GetLevelDepthSize(int32_t level) const;
+	int32_t GetLevelStencilSize(int32_t level) const;
 	bool IsLevelCompressed(int32_t level) const;
 	int32_t GetLevelCompressedImageSize(int32_t level) const;
 	int32_t GetLevelBufferOffset(int32_t level) const;
@@ -449,7 +449,5 @@ public:
 	bool IsImmutableFormat() const;
 	TextureTarget GetTarget() const;
 };
-
-} // namespace DSA
 
 } // namespace GLUtil

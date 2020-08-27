@@ -12,3 +12,8 @@
 build
 intermediates
 lib
+bin
+bazel-bin
+bazel-glutil
+bazel-out
+bazel-testlogs

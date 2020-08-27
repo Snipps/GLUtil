@@ -1,6 +1,6 @@
 #include <GLUtil/State.h>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 #define ENUM(e) static_cast<GLenum>(e)
 

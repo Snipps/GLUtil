@@ -1,6 +1,6 @@
 #include <GLUtil/Shader.h>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 #include <cstring>
 #include <cstdio>

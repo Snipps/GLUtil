@@ -545,7 +545,16 @@ void SetPointParamF(PointParam pname, float value);
 void SetPointParamI(PointParam pname, int32_t value);
 void SetPointParam(PointParam pname, const float* value);
 void SetPointParam(PointParam pname, const int32_t* value);
-// left off here with gets
+
+void SetPointFadeThresholdSize(float size);
+void SetPointSpriteCoordOrigin(Origin origin);
+
+float GetPointSize();
+float GetPointFadeThresholdSize();
+Origin GetPointSpriteCoordOrigin();
+bool UsingProgramPointSize();
+float GetPointSizeGranularity();
+float GetPointSizeRange();
 
 void SetPolygonMode(Face face, PolygonMode mode);
 void SetPolygonOffset(float factor, float units);

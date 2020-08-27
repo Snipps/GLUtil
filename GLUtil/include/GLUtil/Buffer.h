@@ -135,54 +135,6 @@ public:
 	Buffer& operator=(const Buffer&) = delete;
 	Buffer& operator=(Buffer&&) noexcept = default;
 
-	Buffer(BufferTarget target = BufferTarget::CopyWrite);
-	Buffer(uint32_t buffer);
-	Buffer(intptr_t size, const void* data, Flags<BufferStorageFlags> flags, BufferTarget target = BufferTarget::CopyWrite);
-	Buffer(intptr_t size, const void* data, BufferUsage usage, BufferTarget target = BufferTarget::CopyWrite);
-	virtual ~Buffer();
-
-	Buffer& Storage(intptr_t size, const void* data, Flags<BufferStorageFlags> flags, BufferTarget target = BufferTarget::CopyWrite);
-	Buffer& Data(intptr_t size, const void* data, BufferUsage usage, BufferTarget target = BufferTarget::CopyWrite);
-	Buffer& SubData(intptr_t offset, intptr_t size, const void* data, BufferTarget target = BufferTarget::CopyWrite);
-
-	void* Map(BufferAccess access, BufferTarget target = BufferTarget::CopyWrite);
-	void* MapRange(intptr_t offset, intptr_t length, Flags<BufferAccessFlags> accessFLags, BufferTarget target = BufferTarget::CopyWrite);
-	void Unmap(BufferTarget target = BufferTarget::CopyWrite);
-
-	void Bind(BufferTarget target) const;
-	void BindBase(BufferTarget target, uint32_t index) const;
-	void BindRange(BufferTarget target, uint32_t index, intptr_t offset, intptr_t size) const;
-
-	void GetProp(BufferProp pname, int32_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
-	void GetProp(BufferProp pname, int64_t* value, BufferTarget target = BufferTarget::CopyWrite) const;
-	void GetPointer(BufferPointer pname, void** ptr, BufferTarget target = BufferTarget::CopyWrite) const;
-
-	int32_t GetPropI(BufferProp pname, BufferTarget target = BufferTarget::CopyWrite) const;
-	int64_t GetPropI64(BufferProp pname, BufferTarget target = BufferTarget::CopyWrite) const;
-	void* GetPointer(BufferPointer pname, BufferTarget target = BufferTarget::CopyWrite) const;
-
-	BufferAccess GetAccess(BufferTarget target = BufferTarget::CopyWrite) const;
-	Flags<BufferAccessFlags> GetAccessFlags(BufferTarget target = BufferTarget::CopyWrite) const;
-	bool IsImmutableStorage(BufferTarget target = BufferTarget::CopyWrite) const;
-	bool IsMapped(BufferTarget target = BufferTarget::CopyWrite) const;
-	int64_t GetMapLength(BufferTarget target = BufferTarget::CopyWrite) const;
-	int64_t GetMapOffset(BufferTarget target = BufferTarget::CopyWrite) const;
-	int64_t GetSize(BufferTarget target = BufferTarget::CopyWrite) const;
-	Flags<BufferStorageFlags> GetStorageFlags(BufferTarget target = BufferTarget::CopyWrite) const;
-	BufferUsage GetUsage(BufferTarget target = BufferTarget::CopyWrite) const;
-	void* GetMapPointer(BufferTarget target = BufferTarget::CopyWrite) const;
-};
-
-namespace DSA {
-
-class Buffer : public GLObject
-{
-public:
-	Buffer(const Buffer&) = delete;
-	Buffer(Buffer&&) noexcept = default;
-	Buffer& operator=(const Buffer&) = delete;
-	Buffer& operator=(Buffer&&) noexcept = default;
-
 	Buffer();
 	Buffer(uint32_t buffer);
 	Buffer(intptr_t size, const void* data, Flags<BufferStorageFlags> flags);
@@ -220,7 +172,5 @@ public:
 	BufferUsage GetUsage() const;
 	void* GetMapPointer() const;
 };
-
-} // namespace DSA
 
 } // namespace GLUtil

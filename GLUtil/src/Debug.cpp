@@ -1,6 +1,13 @@
 #include <GLUtil/Debug.h>
 
+#include <glad/gl.h>
+
 namespace GLUtil {
+
+Error GetError()
+{
+	return static_cast<Error>(glGetError());
+}
 
 const char* GetErrorString(Error error)
 {

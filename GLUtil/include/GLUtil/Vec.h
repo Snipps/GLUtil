@@ -51,7 +51,7 @@ struct Vec
 	}
 
 	inline const T& operator[](unsigned i) const { return v[i]; }
-	inline T& operator[](unsigned i) const { return v[i]; }
+	inline T& operator[](unsigned i) { return v[i]; }
 	inline operator const T*() const { return v; }
 	inline operator T*() { return v; }
 };

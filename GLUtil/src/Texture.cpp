@@ -1,6 +1,6 @@
 #include <GLUtil/Texture.h>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <stb/image.h>
 
 #include <cmath>
@@ -117,8 +117,6 @@ void SetActiveTextureUnit(uint32_t unit)
 	GLUTIL_GL_CALL(glActiveTexture(GL_TEXTURE0 + unit));
 }
 
-namespace DSA {
-
 Texture::Texture(TextureTarget target)
 {
 	GLUTIL_GL_CALL(glCreateTextures(ENUM(target), 1, GetIDPtr()));
@@ -182,7 +180,7 @@ bool Texture::LoadFile(const char* filename, bool genMipmap)
 
 	int levels = 1;
 	if (genMipmap) {
-		levels = std::max(log2(width), log2(height)) + 1;
+		levels = (int)std::max(log2(width), log2(height)) + 1;
 		SetMinFilter(TextureFilter::LinearMipmapLinear);
 		SetMagFilter(TextureFilter::Nearest);
 	} else {
@@ -590,6 +588,11 @@ int32_t Texture::GetLevelDepthSize(int32_t level) const
 	return GetLevelPropI(level, TextureLevelProp::DepthSize);
 }
 
+int32_t Texture::GetLevelStencilSize(int32_t level) const
+{
+	return GetLevelPropI(level, TextureLevelProp::StencilSize);
+}
+
 bool Texture::IsLevelCompressed(int32_t level) const
 {
 	return GetLevelPropI(level, TextureLevelProp::IsCompressed) == GL_TRUE;
@@ -944,7 +947,5 @@ TextureTarget Texture::GetTarget() const
 {
 	return static_cast<TextureTarget>(GetPropI(TextureProp::Target));
 }
-
-} // namespace DSA
 
 } // namespace GLUtil

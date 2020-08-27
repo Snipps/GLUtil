@@ -95,21 +95,21 @@ enum class DataType : uint32_t
 
 enum class CompareFunc : uint32_t
 {
-	LessEqual,
-	GreaterEqual,
-	Less,
-	Greater,
-	Equal,
-	NotEqual,
-	Always,
-	Never
+	LessEqual = 0x0203,
+	GreaterEqual = 0x0206,
+	Less = 0x0201,
+	Greater = 0x0204,
+	Equal = 0x0202,
+	NotEqual = 0x0205,
+	Always = 0x0207,
+	Never = 0x0200
 };
 
 enum class Access : uint32_t
 {
-	ReadOnly,
-	WriteOnly,
-	ReadWrite
+	ReadOnly = 0x88B8,
+	WriteOnly = 0x88B9,
+	ReadWrite = 0x88BA
 };
 
 uint32_t GetDataTypeSize(DataType type);

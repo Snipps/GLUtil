@@ -8,41 +8,41 @@ namespace GLUtil {
 
 enum class SamplerParam : uint32_t
 {
-	MinFilter,
-	MagFilter,
-	MinLod,
-	MaxLod,
-	WrapS,
-	WrapT,
-	WrapR,
-	BorderColor,
-	CompareMode,
-	CompareFunc
+	MinFilter = 0x2801,
+	MagFilter = 0x2800,
+	MinLod = 0x813A,
+	MaxLod = 0x813B,
+	WrapS = 0x2802,
+	WrapT = 0x2803,
+	WrapR = 0x8072,
+	BorderColor = 0x1004,
+	CompareMode = 0x884C,
+	CompareFunc = 0x884D
 };
 
 enum class TextureFilter : uint32_t
 {
-	Nearest,
-	Linear,
-	NearestMipmapNearest,
-	LinearMipmapNearest,
-	NearestMipmapLinear,
-	LinearMipmapLinear
+	Nearest  = 0x2600,
+	Linear = 0x2601,
+	NearestMipmapNearest = 0x2700,
+	LinearMipmapNearest = 0x2701,
+	NearestMipmapLinear = 0x2702,
+	LinearMipmapLinear = 0x2703
 };
 
 enum class TextureWrap : uint32_t
 {
-	ClampToEdge,
-	ClampToBorder,
-	MirroredRepeat,
-	Repeat,
-	MirrorClampToEdge
+	ClampToEdge = 0x812F,
+	ClampToBorder = 0x812D,
+	MirroredRepeat = 0x8370,
+	Repeat = 0x2901,
+	MirrorClampToEdge = 0x8743
 };
 
 enum class TextureCompareMode : uint32_t
 {
-	RefToTexture,
-	None
+	RefToTexture = 0x884E,
+	None = 0
 };
 
 class Sampler : GLObject
